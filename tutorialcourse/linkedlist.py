@@ -64,19 +64,100 @@ class SingleLinkedList:
                 data=int(input("Enter element to be inserted : "))
                 list.insert_at_end(data)
     def insert_after(self,data,x):
-        pass
+        p=self.start
+        while p is not None:
+            if p.info == x:
+                break
+            p=p.link
+        if p is None:
+            print(x," not resent in the list")
+        else:
+            temp=Node(data)
+            temp.link=p.link
+            p.link=temp
     def insert_before(self,data,x):
-        pass
+        #if list is empty
+        if self.start is None:
+            print("List is empty")
+            return
+        #x is in first node,new node is to be inserted before first node
+        if x == self.start.info:
+            temp=Node(data)
+            temp.link=self.start
+            self.start=temp
+            return
+        #find reference to predecessor of node containing x
+        p=self.start
+        while p.link is not None:
+            if p.link.info==x:
+                break
+            p=p.link
+        if p.link is None:
+            print(x," not resent in the list")
+        else:
+            temp=Node(data)
+            temp.link=p.link
+            p.link=temp
     def insert_at_position(self,data,k):
-        pass
+        if k == 1:
+            temp = Node(data)
+            temp.link=self.start
+            self.start=temp
+            return
+        p=self.start
+        i=1
+        while i<k-1 and p is not None: #find a reference to k-1 node
+            p=p.link
+            i+=1
+        if p is None:
+            print(x," you can insert only upto position ",i)
+        else:
+            temp=Node(data)
+            temp.link=p.link
+            p.link=temp
     def delete_node(self,x):
-        pass
+        if self.start is None:
+            print("List is empty")
+            return
+        #deletion of first node
+        if self.start.info==x:
+            self.start=self.start.link
+            return
+        #Deletion in between or at the end
+        p=self.start
+        while p.link is not None:
+            if p.link.info==x:
+                break
+            p=p.link
+        if p.link is None:
+            print("Element ",x,"not in List")
+        else:
+            p.link=p.link.link
     def delete_first_node(self):
-        pass
+        if self.start is None:
+            print("List is empty")
+            return
+        self.start=self.start.link
     def delete_last_node(self):
-        pass
+        if self.start is None:
+            print("List is empty")
+            return
+        if self.start.link is None:
+            self.start =None
+            return
+        p=self.start
+        while p.link.link is not None:
+            p=p.link
+        p.link=None
     def reverse_list(self):
-        pass
+        prev=None
+        p=self.start
+        while p is not None:
+            next=p.link
+            p.link=prev
+            prev=p
+            p=next
+        self.start=prev
     def bubble_sort_exdata(self):
         pass
     def bubble_sort_exlists(self):
