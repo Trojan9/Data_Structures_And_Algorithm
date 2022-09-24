@@ -11,6 +11,7 @@ class Solution(object):
         :rtype: bool
         """
         #fast and slow pointer approach
+        
         fast=slow=head
         while fast and slow and fast.next:
             slow=slow.next
