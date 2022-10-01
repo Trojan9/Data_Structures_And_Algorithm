@@ -16,6 +16,7 @@ class Solution(object):
         #using dfs
         self.check=""
         self.check2=""
+        #check out dfs function from previous solved questions
         def dfs(node,num):
             if not node:
                 if num==1:
