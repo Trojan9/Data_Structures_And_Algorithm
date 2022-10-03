@@ -11,7 +11,7 @@ class Solution(object):
         :rtype: Optional[ListNode]
         """
         #list1 and list2 are both head for two list..like we kow normally
-        #create a dummy node which will reference the ew merged lists
+        #create a dummy node which will reference the new merged lists
         dummy=ListNode()#we don't need to reference to any yet
         #we do this to avoid case where list is empty..line 14 above oo
         
