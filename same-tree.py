@@ -61,7 +61,7 @@ class Solution(object):
         if not p or not q or p.val!=q.val:
             return False
             
-            
+        #then we compare if both are not empty and are same values
         #then we compare value of left nodes to value of right nodes
         #they must be true and true ..else it returns false
         return (self.isSameTree(p.left,q.left) and self.isSameTree(p.right,q.right))

@@ -23,5 +23,5 @@ class Solution(object):
         root.right=self.mergeTrees(node1.right if node1 else None,node2.right if node2 else None)
         return root
             
-        
+#O(n+m) complexicity
         
