@@ -17,7 +17,7 @@ class Solution:
         while cur:
             #create a copy node
             copy=Node(cur.val)
-            #then map the original to the copy node
+            #then map the original to the copy none
             oldToCopy[cur]=copy
             #next the node
             cur=cur.next
