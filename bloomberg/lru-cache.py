@@ -1,7 +1,7 @@
 #so here we are gonna use double linked list with a map..so this map will point to this
 #so we would have two nodes left and right..all new needed nodes will be in between this two..so we will fix all coming key,val node in between
 
-#so the idea is to have  two dummy nodes named left and right..so the most recently used node at the rightmost before the right node..so we just do self.right.prev and the least used at the leftmost side before left node
+#so the idea is to have  two dummy nodes named left and right..so the most recently used node at the rightmost before the right node..so we just do self.right.prev and the least used at the leftmost side after left node
 class Node:
     def __init__(self, key, val):
         self.key = key
