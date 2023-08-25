@@ -33,3 +33,57 @@ class RandomizedSet:
 # param_1 = obj.insert(val)
 # param_2 = obj.remove(val)
 # param_3 = obj.getRandom()
+
+
+
+
+class RandomizedSet:
+
+    def __init__(self):
+        self.dict = {}
+        self.arr = []
+        self.ptr = 0
+    
+    def insert(self, val: int) -> bool:
+        if val in self.dict:
+            return False
+        self.dict[val] = self.ptr
+        self.arr.append(val)
+        self.ptr += 1
+        return True
+        
+    def remove(self, val: int) -> bool:
+        if val not in self.dict:
+            return False
+        
+        idx = self.dict[val]
+        lastElem = self.arr[-1]
+        self.arr[idx], self.arr[-1] = self.arr[-1], self.arr[idx]
+        self.dict[lastElem] = idx
+        self.ptr -= 1
+        del self.dict[val]
+        self.arr.pop()
+        return True
+
+    def getRandom(self) -> int:
+        randNum = random.choice(self.arr)
+        return randNum
+
+'''
+arr = [9, 5, 7, 3, 1, 6]
+
+dict = {9:0, 5:1, 7:2, 3:3, 1:4, 6:5}
+idx = self.dict[val]
+lastElem = 
+steps
+keep the index of 7
+1. swap 7 and 6
+'''
+        
+
+
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()
