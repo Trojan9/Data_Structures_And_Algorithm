@@ -47,6 +47,7 @@ class RandomizedSet:
     def insert(self, val: int) -> bool:
         if val in self.dict:
             return False
+        # add the value to map with mappings to the current pointer which is gonna be the index in the array
         self.dict[val] = self.ptr
         self.arr.append(val)
         self.ptr += 1
@@ -55,13 +56,16 @@ class RandomizedSet:
     def remove(self, val: int) -> bool:
         if val not in self.dict:
             return False
-        
+        # so basically we exchange the position of our value with that of the present last index
         idx = self.dict[val]
         lastElem = self.arr[-1]
         self.arr[idx], self.arr[-1] = self.arr[-1], self.arr[idx]
         self.dict[lastElem] = idx
+        # reduce the current pointer
         self.ptr -= 1
+
         del self.dict[val]
+        # and the pop it
         self.arr.pop()
         return True
 
