@@ -1,0 +1,46 @@
+for bfs we use mostly deque
+https://www.youtube.com/watch?v=pcKY4hjDrxk&t=52s
+
+at 7:00 of 18:29....you would see how dequeue works
+
+
+we pop the first element in that order to explore i.e popleft
+
+                a
+            b       c
+        d       e       f
+
+        a|b|c|d|e|f
+
+
+#start with a...we add a to the queue...then we check while queue is not empty the loop will run
+
+2.we explore a , then we can find b and c attached...we will add them to the queue
+
+3.next up is to explore b..we can find d and e attached to it..we will add them to the queue also
+
+4. next is to explore c which is next on the queue..we can see  f attached to it also...we will add it to the queue also
+
+5.next is to explore d (don't forget to pop)..we have nothing attached to this..move to next
+
+6.pop the next and explore..which is e..we have nothing attached to it..we move to next
+
+7.pop the next which is f...f has nothing attached to it also
+
+8.the loop stops cuz queue is empty
+
+
+DFS
+
+
+a|b|d|e|c|f
+
+1.we start at a...we go left...we explore b...b also has a left...we explore d which is the next left.
+
+2. d has no left and right to it...we go back to b to check for the right
+
+3.b has a right to it whcich is e...we the check for left ,but e has no left...we also check for right...which it doesn't have
+
+4.we go back to b...the back to a , a has a right , we will explore c which is the right of a...
+
+5. c is on a right so we check the 
