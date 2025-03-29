@@ -12,8 +12,40 @@ class Solution:
                     if nums[x]+nums[y]>nums[z] and nums[x]+nums[z]>nums[y] and nums[z]+nums[y]>nums[x]:
                         res+=1
         return res
-        
-#use this oooo
+#better explanation
+class Solution:
+    def triangleNumber(self, nums: List[int]) -> int:
+        #so triangle rule a+b>c or a+c>b or b+c>a
+        #we will use moving pointer method, with 3 pointers
+        #----------------------------------------->#
+        #|b                              |c      |a<- iterate backwards till index 1
+        #->initially b=0, for every (a)   |
+        #->move to right when b+c < a     |
+        #                                 v
+        #                                 move this to left when b+c>a for every iteration of a
+
+        #so we start from the right, for each movement of a, b is initialized to 0 and c to a-1(b=0, c=a-1)
+        #so while b<c, we will continually move c to the left between b and a
+        #moving c to the left, we will calc b+c>a, if yes move c to the left, if No, move b to the right(forward)
+
+        #firstly sort it , like in a pointer plot..smallest to biggest
+
+        nums.sort()
+        res=0
+        for a in range(len(nums)-1,1,-1):
+            b=0
+            c=a-1
+            while b<c:
+                if nums[b]+nums[c]>nums[a]:
+                    res+=c-b #just the formular to calc possible permutations of the b,c,a, i.e triangle
+                    c-=1
+                else:
+                    b+=1
+        return res
+
+      
+#same as above, this is old exolanation, i explained it better above
+
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
         #we know in triangle , the sum of any two sides must be greater than the 3rd side
