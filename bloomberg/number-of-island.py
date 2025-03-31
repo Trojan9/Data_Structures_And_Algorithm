@@ -55,6 +55,34 @@ class Solution:
         return island
 
 
+#another solution same but instead of doing a range again , we just check if we are in the grid
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        rows,cols = len(grid), len(grid[0])
+        island = 0
+        visited = set()
+
+        def bfs(r,c):
+            q= deque()
+            q.append((r,c))
+            visited.add((r,c))
+
+            while q:
+                rowQue, colQue = q.popleft()
+                for dr,dc in [[rowQue+1,colQue],[rowQue,colQue+1],[rowQue-1,colQue],[rowQue,colQue-1]]:
+                    #make sure we are still withing grid, value is "1" and not visited yet
+                    if 0<=dr<rows and 0<=dc<cols and grid[dr][dc] == "1" and (dr,dc) not in visited:
+                        visited.add((dr,dc))
+                        q.append((dr,dc))
+        
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c]=="1" and (r,c) not in visited:
+                    bfs(r,c)
+                    island +=1
+        return island
+
 #note: if you are added to use dfs just change popleft() to pop() , so you pop at the end instead of at the front....doing this we are using dfs iteratively instead of recursively
 
 
