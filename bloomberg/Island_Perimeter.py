@@ -20,3 +20,29 @@ class Solution:
         return 0
 
         # O(n*M)
+
+#faster solution
+
+#Loop through the grid.
+
+#For every land cell (grid[r][c] == 1):
+
+#Add 4 to the perimeter
+
+#Subtract 1 for each land neighbor (right or down only to avoid double-subtracting)
+
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        perimeter = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    perimeter += 4
+                    #Because each shared edge is counted twice (once from each tile), so subtracting 2 accounts for that.
+                    if r > 0 and grid[r - 1][c] == 1:
+                        perimeter -= 2
+                    if c > 0 and grid[r][c - 1] == 1:
+                        perimeter -= 2
+        return perimeter
