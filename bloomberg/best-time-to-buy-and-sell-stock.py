@@ -13,3 +13,31 @@ class Solution:
             elif price<lower:
                 lower=price
         return maxprice
+
+
+#faster and more understandable solution
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+
+        # we cannot sell in the past
+        maxPrice = 0
+        #so we initialize at index 0, profit is 0 at this day
+        lowest=prices[0]
+        #index of going from index 0, we start from index 1
+        for i in range(1, len(prices)):
+            #if present price is greater than the current lowest price...we calculate the max profit between what we have before and what we have now
+            if prices[i]>lowest:
+                maxPrice = max(maxPrice,(prices[i]-lowest))
+            #else if it is lower than what lower price we have now, this should become when we buy
+            elif prices[i]<lowest:
+                lowest = prices[i]
+        return maxPrice
+            
+
+
+
+
+
+        
+ 
