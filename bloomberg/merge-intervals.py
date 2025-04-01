@@ -5,6 +5,7 @@ class Solution:
             return []
         #first of all we need to sort this guys out
         intervals.sort(key=lambda x:x[0])
+        #just intervals.sort() will do this
         #hold our result
         res=[]
         #so we need to have two pointers at first..min and max initialized to first integer
