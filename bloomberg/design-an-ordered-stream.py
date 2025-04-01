@@ -73,6 +73,16 @@ We’ll:
 
 -If the pointer is ready, collect values until there's a gap
 
+
+###READ READ READ READ########
+##explanation so basicly, pointer won't move until there is a value at current pointer position
+stream = OrderedStream(5)---5 indexs
+And then call:
+---pointer is at index 0
+stream.insert(3, "ccccc") → [] ---insert in position 3, which is index 2, but nothing is at index 0, so pointer doesn't move..we return []
+stream.insert(1, "aaaaa") → ["aaaaa"]--insert index 0 (position 1), now index 0 has value, pointer moves to 1, but index 1 is empty, we return only value at index 0
+stream.insert(2, "bbbbb") → ["bbbbb", "ccccc"]-insert index 1(position 2), now remember pointer is at index 1, index 1 has value, store the value for return; we move pointer to index 2, index 2(position3) also have value ,we store the vaalue for return, we move index pointer to index 3,which is empty, so we return only value at index 1 and 2.
+
 from typing import List
 
 class OrderedStream:
