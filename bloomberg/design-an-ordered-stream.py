@@ -33,6 +33,65 @@ class OrderedStream:
                 
         
 
+You need to:
+
+Create a stream (like a list) that can hold n items.
+
+Receive items using a function insert(id, value).
+
+Return a list of values starting from the current position, only if they are available in the correct order.
+
+📦 Example
+If you create a stream of size 5:
+
+stream = OrderedStream(5)
+And then call:
+
+stream.insert(3, "ccccc") → []
+stream.insert(1, "aaaaa") → ["aaaaa"]
+stream.insert(2, "bbbbb") → ["bbbbb", "ccccc"]
+Here’s why:
+
+The pointer starts at position 1
+
+You inserted item 3 → can't use it yet (waiting for 1)
+
+Then you inserted 1 → now we can return 1
+
+Then 2 → now we can return 2 and also 3 since both are filled
+
+✅ Step-by-Step Plan
+We’ll:
+
+-Use a list to hold the values (like [None, None, ..., None])
+
+-Use a pointer to track the current usable position
+
+-Each time insert(id, value) is called:
+
+-Put the value in the list at id - 1
+
+-If the pointer is ready, collect values until there's a gap
+
+from typing import List
+
+class OrderedStream:
+    def __init__(self, n: int):
+        # Create a list of size n to store values (initially empty)
+        self.stream = [None] * n
+        self.ptr = 0  # This points to where we are currently "reading" from
+
+    def insert(self, id: int, value: str) -> List[str]:
+        # Place the value at position id - 1 (because list is 0-indexed)
+        self.stream[id - 1] = value
+        result = []
+
+        # If the pointer is at a filled position, start collecting values
+        while self.ptr < len(self.stream) and self.stream[self.ptr] is not None:
+            result.append(self.stream[self.ptr])
+            self.ptr += 1  # move pointer forward
+
+        return result
 
 # Your OrderedStream object will be instantiated and called as such:
 # obj = OrderedStream(n)
