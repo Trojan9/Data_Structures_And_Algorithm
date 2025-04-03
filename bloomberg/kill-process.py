@@ -24,5 +24,29 @@ class Solution:
                 #now we repeat this process for all the children to check if they also have children
                 qu.extend(graph[kill_int])
         return res
+
+
+
+
+
+from collections import defaultdict, deque
+class Solution:
+    def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
+        queue = deque()
+        kill_process = [kill]
+        queue.append(kill)
+
+        #first create like a tree, it will be like a map..parent to list of children
+        graph = defaultdict(list)
+        # 5 -> [1,2]
+        for i in range(len(ppid)):
+            graph[ppid[i]].append(pid[i])
+        while queue:
+            search = queue.popleft()
+            if search in graph:
+                #concatinate the list
+                queue.extend(graph[search])
+                kill_process = kill_process + graph[search]
+        return kill_process
             
             
