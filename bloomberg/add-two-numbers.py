@@ -74,4 +74,152 @@ class Solution:
             excess = excess//10
             
         return root.next   
+
+
+
+
+###just studies about linked list
+
+Absolutely! Let’s break down **Linked Lists** from the ground up, in a way that’s easy to understand.
+
+---
+
+## 🧠 What is a Linked List?
+
+A **linked list** is a data structure where each element (called a **node**) contains:
+1. A **value**
+2. A **pointer/reference** to the **next node**
+
+---
+
+### 🔗 Example of a Singly Linked List:
+
+```
+[1] → [2] → [3] → [4] → None
+```
+
+- Each `[x]` is a node
+- Each arrow `→` is the link (pointer)
+- The last node points to `None` (end of list)
+
+---
+
+## 🔄 Types of Linked Lists
+
+1. **Singly Linked List**
+   - Points only to the **next** node
+2. **Doubly Linked List**
+   - Each node points to both **next** and **previous**
+3. **Circular Linked List**
+   - Last node points back to the **first node**
+
+---
+
+## ✅ Why Use Linked Lists?
+
+| Array | Linked List |
+|-------|-------------|
+| Fast index access (`O(1)`) | Slow access (`O(n)`) |
+| Expensive insert/delete in middle (`O(n)`) | Fast insert/delete at any point (`O(1)` if pointer known) |
+| Fixed size (unless resized) | Dynamic size |
+
+Linked lists are great when:
+- You need **fast inserts/deletes**
+- You **don’t need random access** (i.e., `arr[10]`)
+
+---
+
+## 🛠️ Basic Operations You Should Know
+
+### 1. Create a Node
+
+```python
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+```
+
+---
+
+### 2. Create a Linked List (manually)
+
+```python
+node1 = Node(1)
+node2 = Node(2)
+node1.next = node2
+```
+
+---
+
+### 3. Traverse a Linked List
+
+```python
+current = node1
+while current:
+    print(current.val)
+    current = current.next
+```
+
+---
+
+### 4. Insert at the Beginning
+
+```python
+new_node = Node(0)
+new_node.next = node1
+head = new_node
+```
+
+---
+
+### 5. Insert at the End
+
+```python
+current = head
+while current.next:
+    current = current.next
+current.next = Node(99)
+```
+
+---
+
+### 6. Delete a Node (by value)
+
+```python
+def delete_node(head, target):
+    if head.val == target:
+        return head.next
+
+    current = head
+    while current.next:
+        if current.next.val == target:
+            current.next = current.next.next
+            return head
+        current = current.next
+    return head
+```
+
+---
+
+## 📌 Common Interview Questions Involving Linked Lists
+
+- Reverse a linked list
+- Detect a cycle
+- Merge two sorted linked lists
+- Find middle of a linked list
+- Remove nth node from the end
+- Add two numbers (like LeetCode’s [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/))
+
+---
+
+## 🧠 TL;DR
+
+- **Linked List = nodes linked by pointers**
+- Efficient at **inserting/removing**, but slow for **index-based access**
+- Important for interview questions, especially for pointer/recursion practice
+
+---
+
+Want me to show how to reverse one or solve a common problem using linked lists?
         
