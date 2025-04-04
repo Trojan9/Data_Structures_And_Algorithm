@@ -1,3 +1,16 @@
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+Example 2:
+
+Input: l1 = [0], l2 = [0]
+Output: [0]
+Example 3:
+
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
+
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -74,6 +87,43 @@ class Solution:
             excess = excess//10
             
         return root.next   
+
+
+#ut just with more explanation
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        root = ListNode(0)
+        #we need to hold reference of the first node, so we can shed it off later
+        #cuz if we don't we will be on the last node after the while loop 
+        #so it's better the dummy node is at the start, and keep reference to it, so we can easily remove it
+        result = root
+        excess = 0
+
+        while l1 or l2 or excess:
+            if l1 :
+                excess += l1.val
+                #transverse to next
+                l1 = l1.next
+            if l2:
+                excess += l2.val
+                #transverse to next
+                l2 = l2.next
+                
+            #when both list are exhausted nd there is still excess umber left..it would add to the linkednode this extra value
+            result.next = ListNode(excess % 10)
+            #transverse to next node
+            result = result.next
+
+            excess = excess//10
+        
+
+        return root.next
 
 
 
