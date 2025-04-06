@@ -41,9 +41,43 @@ class UndergroundSystem(object):
         #return the average
         #we used the sum(map(float,val)) because using only sum() will convert to integer
         return sum(map(float,self.calc[(startStation,endStation)]))/len(self.calc[(startStation,endStation)])
+
+
+########################################################################
+####Another solution###########
+class UndergroundSystem:
+
+    def __init__(self):
+        self.customer = defaultdict(tuple)
+        self.calc = defaultdict(list)
+
+        
+        
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        self.customer[id] = (t,stationName)
+
+
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        startTime,stationStartName = self.customer[id]
+        diff = t-startTime
+        del self.customer[id]
+        if (stationStartName,stationName) in self.calc:
+            self.calc[(stationStartName,stationName)].append(diff)
+        else:
+            self.calc[(stationStartName,stationName)] = [diff]
+  
+
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        return sum(self.calc[(startStation,endStation)])/ len(self.calc[(startStation,endStation)])
+ 
         
 
 
+# Your UndergroundSystem object will be instantiated and called as such:
+# obj = UndergroundSystem()
+# obj.checkIn(id,stationName,t)
+# obj.checkOut(id,stationName,t)
+# param_3 = obj.getAverageTime(startStation,endStation)
 # Your UndergroundSystem object will be instantiated and called as such:
 # obj = UndergroundSystem()
 # obj.checkIn(id,stationName,t)
