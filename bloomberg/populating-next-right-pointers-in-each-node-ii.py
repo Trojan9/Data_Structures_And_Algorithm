@@ -36,3 +36,29 @@ class Solution:
                     mymap[key][k].next=None
         #return root
         return root
+
+
+####preferred solution 
+#####this is similar to the previous one version I of it..same solution
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:
+            return None
+        queue = collections.deque([root])
+
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                q= queue.popleft()
+
+                if i < size-1:
+                    q.next = queue[0] 
+                #make sure to add the left before the right
+                #BFS only works if nodes are processed in left-to-right order, level by level.
+                if q.left:
+                    queue.append(q.left)
+                if q.right:
+                    queue.append(q.right)
+        return root
+        
+        
