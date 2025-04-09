@@ -34,7 +34,48 @@ class RandomizedSet:
 # param_2 = obj.remove(val)
 # param_3 = obj.getRandom()
 
+##################### Another Solution ####################
 
+#so firstly, set does not give index
+#we cannot loop through since they said we must solve in 0(1)
+#so the only option is to have a map that holds the index of this values
+#when we are to remove...replace the value at that index with the end value and pop the last one
+import random
+class RandomizedSet:
+
+    def __init__(self):
+      self.set_map={}
+      self.hashset=[]
+
+    def insert(self, val: int) -> bool:
+        if val in self.hashset:
+            return False
+        self.set_map[val] = len(self.hashset)
+        self.hashset.append(val)
+        return True
+       
+        
+    def remove(self, val: int) -> bool:
+        if val not in self.hashset:
+            return False
+        
+        last_value = self.hashset[-1]
+        current_index= self.set_map.get(val)
+        self.set_map[last_value]= current_index
+        self.hashset[current_index]= last_value
+        self.hashset.pop()
+        del self.set_map[val]
+        return True
+
+        
+    def getRandom(self) -> int:
+        return random.sample(self.hashset, 1)[0]
+
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()
 
 
 class RandomizedSet:
