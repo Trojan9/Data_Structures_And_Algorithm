@@ -64,6 +64,7 @@ class Solution:
                     q.next = queue[0]
                 #Add the left and right children of the current node to the queue.
                 #This prepares the next level for processing.
+                #make sure you add the left before the right, because BFS works from left to right, level by level..NOT right to left
                 if q.left:
                     queue.append(q.left)
                 if q.right:
