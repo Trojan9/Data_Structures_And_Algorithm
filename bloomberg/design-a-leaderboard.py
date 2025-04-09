@@ -1,3 +1,36 @@
+###this is my won solution sha
+
+class Leaderboard:
+
+    def __init__(self):
+        self.leader={}
+        
+    def addScore(self, playerId: int, score: int) -> None:
+        if playerId not in self.leader:
+            self.leader[playerId] = score
+        else:
+            self.leader[playerId] +=score
+     
+
+    def top(self, K: int) -> int:
+        if not self.leader:
+            return 0
+        # needed to arrange from biggest to smallest, but sorted does smallest to biggest..so i neagted it
+        lemesort = sorted([ -1 * self.leader[val] for val in self.leader])
+        if K >len(lemesort):
+            return -1* sum(lemesort[0:])
+        else:
+            return -1 * sum(lemesort[0:K])
+
+    def reset(self, playerId: int) -> None:
+        del self.leader[playerId]
+
+
+
+### another solution below ###
+
+
+
 class Leaderboard:
 
     def __init__(self):
