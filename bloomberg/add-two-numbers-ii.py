@@ -4,6 +4,37 @@
 #         self.val = val
 #         self.next = next
 
+#convert both to string and int, do the math , then create the node from the result
+
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        if not l1 and not l2:
+            return None
+        #convert both to string and int, do the math , then create the node from the result
+        deno=""
+        nume=""
+        while l1:
+            nume = nume+str(l1.val)
+            l1=l1.next
+        while l2:
+            deno = deno+str(l2.val)
+            l2=l2.next
+
+
+        sumeof= int(nume) + int(deno)
+        numb= str(sumeof)
+        res=ListNode(int(numb[0]))
+        dup = res
+        for i in range(1,len(numb),1):
+            dup.next=ListNode(int(numb[i]))
+            dup = dup.next
+        
+        return res
+
+
+##### Another solution ################
+
+
 #so the idea is to convert this list to a number then do the sum..then create a new linkedList with this value
 class Solution:
     def convertToNumber(self,node):
