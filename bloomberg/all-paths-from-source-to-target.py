@@ -20,4 +20,44 @@ class Solution:
         #so first node is 0, path is [0]
         dfs(0,[0],output)
         return output
+
+
+####### more explanation ##################
+
+
+#graph = [[1,2], [3], [3], []]
+#This means:
+
+#Node 0 → [1, 2]
+
+#Node 1 → [3]
+
+#Node 2 → [3]
+
+#Node 3 → []
+
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        target = len(graph)-1
+        #define a list to hold the result of all the paths available
+        result = []
+        #node is present node, path is a list that will hold concurrent nodes that leads to target
+        def dfs (node, path):
+            if node == target:
+                #adds the paths with present node as target
+                result.append(path[:]) # same as result.add([...path]) but in python
+                #breaks the recursion
+                return
+            for child in graph[node]:
+                #now add the child into the path
+                path.append(child)
+                #this will continually call dfs till the last node without a child
+                dfs(child,path)
+                # when the recursion breaks, this removes all with path not ending with target node
+                path.pop()
+
+        dfs(0,[0])
+
+        return result 
+        
         
