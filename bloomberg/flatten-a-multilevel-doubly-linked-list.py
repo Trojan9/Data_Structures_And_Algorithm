@@ -15,6 +15,8 @@ class Solution(object):
         :rtype: Node
         """
         #this is like level order transversing
+# so remember stack it will take the last added to explore
+#now if the child is added last, it will take the last child added to explore first
         #if head is null..return null
         if not head:return head
         dummy=Node(0)
@@ -33,4 +35,44 @@ class Solution(object):
             
         
         #using recursive method
+
+
+
+
+##########another solution 0(n*n)
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val, prev, next, child):
+        self.val = val
+        self.prev = prev
+        self.next = next
+        self.child = child
+"""
+
+class Solution:
+    def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        curr= head
+        stack = []
+        if not curr:
+            return None
+        while curr.next or curr.child:
+            if curr.child:
+                if curr.next:
+                    stack.append(curr.next)
+                curr.next = curr.child
+                curr.next.prev = curr
+                curr.child = None
+            if curr.next:
+                curr = curr.next
+        
+        while stack:
+            remain = stack.pop()
+            curr.next= remain
+            curr.next.prev = curr
+            while curr.next:
+                curr = curr.next
+        
+        return head
+
         
