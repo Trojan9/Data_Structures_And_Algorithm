@@ -75,4 +75,34 @@ class Solution:
         
         return head
 
+
+
+
+#####same with more explanation
+
+class Solution:
+    def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
         
+        if not head:
+            return head
+        stack = [head]
+        dummy = Node(0)
+        curr= dummy
+        while stack:
+            pres = stack.pop()#takes lastly added
+            #now imagine if the child is added last it will always explore the child first
+            if pres.next:
+                stack.append(pres.next)
+            #remember to ad this last
+            if pres.child:
+                stack.append(pres.child)
+            #remove child
+            pres.child = None
+            curr.next = pres
+            curr.next.prev = curr
+            #transverse
+            curr = curr.next
+            
+        dummy.next.prev = None
+
+        return dummy.next
