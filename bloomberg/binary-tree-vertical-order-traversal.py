@@ -1,30 +1,47 @@
-# # Definition for a binary tree node.
-# # class TreeNode:
-# #     def __init__(self, val=0, left=None, right=None):
-# #         self.val = val
-# #         self.left = left
-# #         self.right = right
-# class Solution:
-#     def dfs(self,p,counter):
-#         if p is None:
-#             return None
-#         print(p.val)
-#         self.dict[counter].append(p.val)
-#         self.minimal=min(self.minimal,counter)
-#         self.maxim=max(self.maxim,counter)
-        
-#         self.dfs(p.left,counter-1)
-#         self.dfs(p.right,counter+1)
-        
-#     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-#         self.dict=defaultdict(list)
-#         self.minimal=0
-#         self.maxim=0
-#         self.dfs(root,0)
-#         return [self.dict[x] for x in range(self.minimal, self.maxim + 1)]
 
+### my solution ###################################
 #seems like dfs cannot work for this solution
 #only breadth first search will work..bfs
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        #we need to use bfs..because of the rule of same node on same level, we pick left first before right
+        queue = deque() 
+        queue.append((root, 0))
+        dictmap=defaultdict(list)
+        #keep record of minimum level nd maximum level
+        mini = 0 
+        maxi = 0
+        while queue:
+            #get the level nd append them to the list
+            node,level = queue.popleft()
+            mini = min(level,mini)
+            maxi = max(level, maxi)
+            if level in dictmap:
+                dictmap[level].append(node.val)
+            else:
+                dictmap[level] = [node.val]
+            #add to the queue, go from left to right
+            if node.left: queue.append((node.left,level-1))
+            if node.right: queue.append((node.right,level+1))
+
+        res = []
+        for i in range(mini,maxi+1,1):
+            if i in dictmap:
+                res.append(dictmap[i])
+
+        return res
+
+
+####################################################################################
 class Solution:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         #so the idea is to start from pointer 0..so when we move left we minus 1(-1) but when we move right we add 1 (+1)..so we use this pointers as the key..so every nodes with same pointer fall under same vertical line..we add the values to the list
