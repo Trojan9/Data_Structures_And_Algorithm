@@ -74,7 +74,40 @@ class LRUCache:
             #remember we have the key and value stored in this lru node also
             
             
-           
+####### my preferred solution ###########################
+
+from collections import OrderedDict
+#an OrderedDict is a special kind of dictionary in Python that:
+#Remembers the order in which you insert items.
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.orderDict = OrderedDict()
+
+    def get(self, key: int) -> int:
+        if key not in self.orderDict:
+            return -1
+        #if yes..move key to last(lastest) since it was recently accessed
+        self.orderDict.move_to_end(key)
+        return self.orderDict[key]
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.orderDict:
+            #replace value and move to the end, as it is newly accessed
+            self.orderDict[key] = value
+            self.orderDict.move_to_end(key)
+        else:
+            self.orderDict[key] = value
+            #pop the first item on the list, since that is the oldest in list
+            #last is the lastest accesses
+            if len(self.orderDict) > self.capacity:
+                self.orderDict.popitem(last = False)
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
             
 
 
