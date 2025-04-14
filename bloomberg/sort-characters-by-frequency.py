@@ -18,4 +18,18 @@ class Solution:
             del hashmap[maximumkey]
         #return result
         return res
-            
+
+
+####### solution 2 ##############################
+
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        count = Counter(s)
+        #turns to a tuple
+        count = sorted(count.items(),key= lambda x: x[1])
+        res = ''
+        print(count)
+        for value in count:
+            res = (value[1] * value[0]) + res
+        return res
+        
