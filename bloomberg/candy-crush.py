@@ -41,16 +41,27 @@ class Solution:
         
         #step 4 is to run gravity using the pushing zeros idea
         if not stable:
-            
+            #now we need to go column by column
             #so start at bottom to up i.e start at len(arr)-1, end at -1 exclusive..so it ends at 0..in -1 step wise
             #don't miss it..c comes first
+            #so for each column
             for c in range(len(board[0])):
+                #start from the buttom row
+                #so ind hold the position above the last block seen
                 ind=len(board)-1
                 #since its applys to only vertical...the columns
+                #so we check from buttom upwards
                 for r in range(len(board)-1,-1,-1):
+                    #if there is a block there, we move this to the position of the ind where we expect there should be block
+                    #there moment there is an empty space this guy below will not run, and now the present position will be one ahead the index we need blocks
+                    #so the present block will move to the one below it
                     if board[r][c]>0:
+                        #here if [ind][c] are same position, it just re-equate to itself
                         board[ind][c]=board[r][c]
+                        #holds the position above the last block seen
                         ind -=  1
+                #so we moved the blocks above the empty space to the empty spaces
+                #now we need to replace the positions we moved this block from with 0
                 for i in range(ind,-1,-1):
                     board[i][c]=0
         return board if stable else self.candyCrush(board)
