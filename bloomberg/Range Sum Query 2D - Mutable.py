@@ -67,3 +67,43 @@ class NumMatrix:
 # param_2 = obj.sumRegion(row1,col1,row2,col2)
 
 
+
+##### another approach ##########
+### just create cummulative of the 2 D #######
+matrix = [
+  [3, 0, 1, 4, 2],
+  [5, 6, 3, 2, 1],
+  [1, 2, 0, 1, 5],
+  [4, 1, 0, 1, 7],
+  [1, 0, 3, 0, 5]
+]
+
+obj = NumMatrix(matrix)
+print(obj.sumRegion(2, 1, 4, 3))  # Output: 8
+print(obj.sumRegion(1, 1, 2, 2))  # Output: 11
+print(obj.sumRegion(1, 2, 2, 4))  # Output: 12
+
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        self.map = {}
+        self.rows = len(matrix)
+        self.cols = len(matrix[0])
+
+        for r in range(self.rows):
+            for c in range(self.cols):
+                top = self.map.get((r - 1, c), 0)
+                left = self.map.get((r, c - 1), 0)
+                diagonal = self.map.get((r - 1, c - 1), 0)
+                #so we add the 2d - the diagonal
+                self.map[(r, c)] = matrix[r][c] + top + left - diagonal
+        print(self.map)
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        total = self.map[(row2, col2)]
+        #so basically we do the exact opposite, minus the 2 D outside the bracket
+        # and add the diagonal just outside the bracket
+        top = self.map.get((row1 - 1, col2), 0)
+        left = self.map.get((row2, col1 - 1), 0)
+        overlap = self.map.get((row1 - 1, col1 - 1), 0)
+        return total - top - left + overlap    
+
