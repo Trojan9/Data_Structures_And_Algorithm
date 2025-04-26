@@ -16,6 +16,8 @@ Explanation: when we rotate 9 times, we'll get 3 9 1 7 as resultant array.
 
 #### i will use juggling algorithm ####
 
+######### SOLUTION EXPLANATION ########
+
 GCD (Greatest Common Divisor) of two numbers a and b is the largest number that divides both a and b exactly.
 
 Example: GCD(2,5) = 1 → No bigger number divides both.
@@ -105,7 +107,8 @@ class Solution:
         n = len(arr)
         d = d % n
         gcd = math.gcd(d,n) ###get the gcp between the number of rotation and the len of array
-        
+
+        #now loop through the amount of gcd, which is the amount of rotation loop we will go
         for i in range(gcd):
             #store the current index item, cuz after the gcp rotation loop it's gonna get left unreplaced
             temp = arr[i]
