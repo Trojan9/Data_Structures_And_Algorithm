@@ -90,9 +90,9 @@ class Solution:
             graph[equations[i][1]][equations[i][0]] = 1 / values[i]
 
         
-
         def bfs(start,end):
-            if start not in graph and end not in graph:
+            #if any of start or end not in graph...noting of it was given then then..no way we culd get something
+            if start not in graph or end not in graph:
                 return -1.0
             if start == end:
                 return 1.0
