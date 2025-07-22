@@ -140,3 +140,34 @@ class NumMatrix:
         overlap = self.map.get((row1 - 1, col1 - 1), 0)
         return total - top - left + overlap    
 
+
+class NumMatrix:
+    def __init__(self, matrix: List[List[int]]):
+        self.matrix=matrix
+        if not matrix or not matrix[0]:
+            return
+        self.row , self.col = len(matrix) , len(matrix[0])
+        self.sumMat = [[0]* (self.col+1) for r in range (self.row+1)]
+        for r in range(self.row):
+            for c in range(self.col):
+                self.sumMat[r+1][c+1] = (
+                    self.sumMat[r][c+1] +   # above
+                    self.sumMat[r+1][c] -   # left
+                    self.sumMat[r][c] +     # remove top-left overlap
+                    matrix[r][c]            # current value
+                    )
+
+    def update(self, row: int, col: int, val: int) -> None:
+        valpoint = self.matrix[row][col]
+        dif = val - valpoint
+        self.matrix[row][col] = val
+        for r in range(row,self.row):
+            for c in range(col, self.col):
+                self.sumMat[r+1][c+1] +=dif
+        
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        r1,c1,r2,c2 = row1+1,col1+1,row2+1,col2+1
+        sumregion = self.sumMat[r2][c2] - self.sumMat[r1-1][c2] - self.sumMat[r2][c1-1]+ self.sumMat[r1-1][c1-1]
+        return sumregion
+
