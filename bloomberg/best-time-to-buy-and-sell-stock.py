@@ -33,6 +33,23 @@ class Solution:
             elif prices[i]<lowest:
                 lowest = prices[i]
         return maxPrice
+
+################################
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+
+        mini = float("inf")
+        best = 0
+        for val in prices:
+            if val < mini:
+                mini = val
+            best = max(best, val - mini)
+        return best
+
+
+
+        
             
 
 
