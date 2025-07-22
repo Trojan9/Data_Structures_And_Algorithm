@@ -65,3 +65,62 @@ class Solution:
                 for i in range(ind,-1,-1):
                     board[i][c]=0
         return board if stable else self.candyCrush(board)
+
+
+
+
+
+
+class Solution:
+    def candyCrush(self, board: List[List[int]]) -> List[List[int]]:
+        #so we gonna make use of recursive operation
+        if not board:
+            return board
+        rows = len(board)
+        cols = len(board[0])
+        stable = True
+
+        for r in range(rows):
+            for c in range (cols-2):
+                num1 = abs(board[r][c])
+                num2 = abs(board[r][c+1])
+                num3 = abs(board[r][c+2])
+            
+                if num1 == num2 and num1 == num3 and num1 != 0:
+                    board[r][c] = -1 * num1
+                    board[r][c+1] = -1 * num2
+                    board[r][c+2] = -1 * num3
+                    stable = False
+        
+        for r in range(rows-2):
+            for c in range(cols):
+                num1 = abs(board[r][c])
+                num2 = abs(board[r+1][c])
+                num3 = abs(board[r+2][c])
+            
+                if num1 == num2 and num1 == num3 and num1 != 0:
+                    board[r][c] = -1 * num1
+                    board[r+1][c] = -1 * num2
+                    board[r+2][c] = -1 * num3
+                    stable = False
+        
+        if not stable:
+            #now we need to go col by column
+            for c in range(cols):
+                #hold the position of last empty space, we start looking from bottom to up, so that we need to fill up the space also
+                lastEmptyIndex = rows - 1
+                # so we move from down to the top
+                for r in reversed(range(rows)):
+                    #if position is greater than 0, it has a block
+                    if board[r][c] > 0:
+                        board[lastEmptyIndex][c] = board[r][c]
+                        lastEmptyIndex -= 1
+
+                #now replace all the moved blocks with nothing to fill them up with 0
+                for i in range(lastEmptyIndex,-1,-1):
+                    board[i][c]=0
+        
+        return board if stable else self.candyCrush(board)
+                    
+
+                    
