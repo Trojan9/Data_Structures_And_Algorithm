@@ -1,6 +1,21 @@
 # https://www.youtube.com/watch?v=KE8MQuwE2yA&t=12s
 
 
+2D Prefix Sum Formula (Summed-Area Table)
+To compute the sum of elements inside a submatrix from (row1, col1) to (row2, col2), use the following formula:
+
+---(notice we only -1 from either r1 or c1)--something to help you cram
+sumRegion(row1, col1, row2, col2) = 
+    sumMat[r2][c2]
+  - sumMat[r1 - 1][c2]
+  - sumMat[r2][c1 - 1]
+  + sumMat[r1 - 1][c1 - 1]
+Where:
+
+sumMat is the precomputed 2D prefix sum matrix.
+
+The indices are 1-based in sumMat to simplify boundary checks.
+
 # for this we are goa get the prefix sum of the matrix
 # so we we need to find the sum we just take the difference between diagonals, 
 #                                 0  0  0   0   0    0             
