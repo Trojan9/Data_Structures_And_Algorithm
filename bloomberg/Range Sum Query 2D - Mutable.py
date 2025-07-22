@@ -24,6 +24,11 @@ The indices are 1-based in sumMat to simplify boundary checks.
 #  3 4 5 6 3                      0  10 23  39  58   66         3+7  3+4+16  3+4+5+27  3+4+5+6+40  3+4+5+6+3+45
 #  3 4 6 8 3      when we prefix  0  13 30  52  79   90         3+10 3+4+23  3+4+6+39  3+4+6+8+58  3+4+6+8+3+66
 
+i.e everything surronding sumMat[r+1][c+1] to the left + matrix [r][c]....
+remember we have [r+1][c+1] because we added 0's to surrond our matrix
+
+self.sumMat[r+1][c+1] = self.sumMat[r][c+1] + self.sumMat[r][c] + self.sumMat[r+1][c] + matrix[r][c]
+
 #start read with col first for better reading
 # taking (1,2) to (2,3) in a square...when we use in out prefix...(2,3) to (3,4)..not index starts from 0
 #  bottomRight= 58     (3,4) in our prefix
