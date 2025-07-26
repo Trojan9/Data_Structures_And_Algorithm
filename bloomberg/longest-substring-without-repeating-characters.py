@@ -43,6 +43,31 @@ class Solution:
             if s[right] in hashmap and hashmap[s[right]] >= left:
                left = hashmap[s[right]] + 1
             hashmap[s[right]] = right
+
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+
+        queue = deque()
+        maxi = 0
+
+        for i in range(len(s)):
+            if s[i] not in queue:
+                queue.append(s[i])
+                maxi = max(maxi,len(queue))
+            else:
+                while s[i] in queue:
+                    queue.popleft()
+                queue.append(s[i])
+                maxi = max(maxi,len(queue))
+
+        return maxi
+
+
+
+
+        
             maxi = max(maxi,right-left+1)
 
         return maxi
