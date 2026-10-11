@@ -34,3 +34,75 @@ Explanation: The array has only single element, hence the reversed array is same
             arr[i] = temp
         
         return arr
+
+
+
+####### another solution ########
+
+Visual walkthrough: Reversing an Array
+
+Original array:
+Index:    0   1   2   3   4
+Array:   [1,  2,  3,  4,  5]
+          ↑               ↑
+         left           right
+
+
+Step 1: Swap 1 and 5
+Before:  [1, 2, 3, 4, 5]
+          ↑           ↑
+         left        right
+
+After:   [5, 2, 3, 4, 1]
+
+
+Move both pointers inward:
+         [5, 2, 3, 4, 1]
+             ↑     ↑
+            left  right
+
+
+Step 2: Swap 2 and 4
+Before:  [5, 2, 3, 4, 1]
+             ↑     ↑
+            left  right
+
+After:   [5, 4, 3, 2, 1]
+
+
+Move both pointers inward:
+         [5, 4, 3, 2, 1]
+                ↑
+             left/right
+
+
+Step 3: Stop
+
+Now left = 2 and right = 2.
+Since left < right is false, the loop terminates.
+Final reversed array:
+Original: [1, 2, 3, 4, 5]
+Reversed: [5, 4, 3, 2, 1]
+
+  
+0(n)-time
+0(1)-space
+
+  
+def reverse_array(arr):
+    left = 0
+    right = len(arr) - 1
+
+    while left < right:
+        hold = arr[left]
+        arr[left] = arr[right]
+        arr[right] = hold
+
+        left += 1
+        right -= 1
+
+    return arr
+
+arr = [1, 2, 3, 4, 5]
+print(reverse_array(arr))
+# [5, 4, 3, 2, 1]
