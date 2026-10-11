@@ -23,6 +23,9 @@ class Solution:
         #what we are going to do is sort the words acording to unicode 
         #remember we can use sorted with list or tuple
         #all anagrams will be sorted to becom same words, we will just appen this to a list of their dict
+
+        #sorted() returns a list and list cannot be a key to a dictionary
+        #we convert to a tuple which is immutable and can be used as a key
         for word in strs:
             if tuple(sorted(word)) in res:
                 res[tuple(sorted(word))].append(word)
