@@ -124,3 +124,73 @@ class Solution:
             # add the temp at the current j
             arr[j] = temp
         return arr
+
+
+
+####more simpler approach to understand....
+
+
+Step-by-step execution
+Iteration	i	arr[i]	Array after append
+Start	—	—	[7, 3, 9, 1]
+1	0	7	[7, 3, 9, 1, 7]
+2	1	3	[7, 3, 9, 1, 7, 3]
+3	2	9	[7, 3, 9, 1, 7, 3, 9]
+4	3	1	[7, 3, 9, 1, 7, 3, 9, 1]
+5	4	7	[7, 3, 9, 1, 7, 3, 9, 1, 7]
+6	5	3	[7, 3, 9, 1, 7, 3, 9, 1, 7, 3]
+7	6	9	[7, 3, 9, 1, 7, 3, 9, 1, 7, 3, 9]
+8	7	1	[7, 3, 9, 1, 7, 3, 9, 1, 7, 3, 9, 1]
+9	8	7	[7, 3, 9, 1, 7, 3, 9, 1, 7, 3, 9, 1, 7]
+Now your last line executes:
+
+return arr[9:]
+
+
+
+The result is:
+Index:  0  1  2  3  4  5  6  7  8 | 9  10 11 12
+Array: [7, 3, 9, 1, 7, 3, 9, 1, 7 | 3, 9, 1, 7]
+                                  ↑
+                              Slice starts
+
+Result: [3, 9, 1, 7]
+
+
+
+def rotateArr(self, arr, d):
+    if len(arr) < 2:
+        return arr
+
+  ####ensures that we don't rotate the array more times than necessary.The % operator is called the modulo operator. It returns the remainder after division. 
+  
+    d = d % len(arr)
+
+    for i in range(d):
+        arr.append(arr[i])
+
+    return arr[d:]
+
+
+
+
+
+
+
+
+
+###more explanation on d= d % len(Arr)
+
+Original:    [7, 3, 9, 1]
+
+Rotation 1:  [3, 9, 1, 7]
+Rotation 2:  [9, 1, 7, 3]
+Rotation 3:  [1, 7, 3, 9]
+Rotation 4:  [7, 3, 9, 1]  ← Back to original
+
+Rotation 5:  [3, 9, 1, 7]
+Rotation 6:  [9, 1, 7, 3]
+Rotation 7:  [1, 7, 3, 9]
+Rotation 8:  [7, 3, 9, 1]  ← Back to original
+
+Rotation 9:  [3, 9, 1, 7]
