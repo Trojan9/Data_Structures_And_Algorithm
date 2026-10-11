@@ -1,4 +1,55 @@
-Computer science principles (cheat code)
+# Data Structures & Algorithms
+
+Solutions grouped by **the principle that solves them**, not by company. Work through the folders in order. Each one builds on the ones before it.
+Each folder has its own README with a one-line key idea per problem, and a ✅ marks problems tagged as Bloomberg questions.
+
+## Principles (93 problems)
+
+| Principle | When to reach for it | # |
+|---|---|:-:|
+| [Arrays & Matrices](01-arrays-and-matrices/) | Index arithmetic, in-place swaps and grid simulation. Learn these before anything else. | 5 |
+| [Hashing (hash maps & sets)](02-hashing/) | Trade memory for O(1) lookups: count frequencies, remember what you've seen, group by a key. | 12 |
+| [Two Pointers](03-two-pointers/) | Two indices moving toward each other (or at different speeds) over sorted or sequential data to avoid nested loops. | 5 |
+| [Sliding Window](04-sliding-window/) | Grow the right edge, shrink the left edge while the window is invalid. Turns O(n^2) substring problems into O(n). | 1 |
+| [Prefix Sum](05-prefix-sum/) | Precompute running totals so any range sum is prefix[r+1] - prefix[l] in O(1). | 3 |
+| [Stack](06-stack/) | Last-in, first-out: matching brackets, undoing, nesting, and 'most recent unresolved item' problems. | 5 |
+| [Binary Search](07-binary-search/) | Halve a sorted search space each step: O(log n). Watch the loop condition and mid +/- 1. | 3 |
+| [Linked Lists](08-linked-lists/) | Dummy head nodes, fast/slow pointers, and careful pointer rewiring. | 12 |
+| [Trees: Depth-First Search](09-trees-dfs/) | Recurse down left/right subtrees and combine results on the way back up. | 9 |
+| [Trees: Breadth-First Search (level order)](10-trees-bfs/) | Use a deque; process one level at a time with `for _ in range(len(queue))`. | 5 |
+| [Binary Search Trees](11-binary-search-trees/) | Left < node < right. In-order traversal visits values in sorted order. | 2 |
+| [Graphs (BFS / DFS on grids and adjacency lists)](12-graphs/) | Build an adjacency list (or treat a grid as a graph), keep a visited set, then BFS or DFS. | 5 |
+| [Heap / Priority Queue](13-heap-priority-queue/) | Get the smallest (or largest, by negating) item in O(log n). Go-to for 'top K' problems. | 1 |
+| [Intervals](14-intervals/) | Sort by start time first, then sweep and compare neighbours. | 3 |
+| [Greedy](15-greedy/) | Make the locally best choice each step, when you can prove it never hurts later. | 3 |
+| [Backtracking](16-backtracking/) | Choose, explore, un-choose. Builds every combination/path; prune early. | 3 |
+| [Dynamic Programming](17-dynamic-programming/) | Break into overlapping subproblems, store the answers (memo or table). | 4 |
+| [Math & Bit Manipulation](18-math-and-bit-manipulation/) | Digit tricks (% 10, // 10), XOR cancelling, and bit-count recurrences. | 5 |
+| [Design (build a data structure)](19-design/) | Combine the structures above into a class with fast operations. Very common in Bloomberg interviews. | 7 |
+
+## Notes
+
+- [BFS vs DFS walkthrough](notes/bfs-vs-dfs.txt)
+
+## Pattern recognition cheat sheet
+
+| If the problem says... | Try |
+|---|---|
+| "find a pair / have I seen this before / count occurrences" | Hashing |
+| sorted array, or "pair that sums to X" in place | Two Pointers / Binary Search |
+| "longest / shortest substring or subarray that..." | Sliding Window |
+| "sum of range i..j", asked many times | Prefix Sum |
+| brackets, nesting, "undo", "most recent" | Stack |
+| "kth largest", "top K", "smallest so far, repeatedly" | Heap |
+| list of [start, end] | Intervals (sort by start) |
+| tree, "per level" | Trees BFS |
+| tree, "height / path / compare subtrees" | Trees DFS |
+| grid of cells, "connected", "islands", dependencies | Graphs |
+| "all combinations / subsets / permutations" | Backtracking |
+| "number of ways", "min/max cost", choices that overlap | Dynamic Programming |
+| "design a class that supports X in O(1)" | Design |
+
+## Computer science principles (cheat code)
 
 Here you go:
 
