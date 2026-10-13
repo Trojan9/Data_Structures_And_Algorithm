@@ -43,6 +43,9 @@ class Solution:
             if s[right] in hashmap and hashmap[s[right]] >= left:
                left = hashmap[s[right]] + 1
             hashmap[s[right]] = right
+            maxi = max(maxi,right-left+1)
+
+        return maxi
 
 
 
@@ -68,7 +71,5 @@ class Solution:
 
 
         
-            maxi = max(maxi,right-left+1)
 
-        return maxi
         
