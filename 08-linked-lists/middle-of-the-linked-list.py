@@ -17,4 +17,27 @@ class Solution(object):
             slow=slow.next
             fast=fast.next.next
         return slow
-        
+
+
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+
+
+
+#####Dry Run Examples
+
+• Odd Length: 1 -> 2 -> 3 -> 4 -> 5
+	• Step 1: slow = 2, fast = 3
+	• Step 2: slow = 3, fast = 5
+	• Loop ends (fast.next is null). Returns slow (node 3).
+• Even Length: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+	• Step 1: slow = 2, fast = 3
+	• Step 2: slow = 3, fast = 5
+	• Step 3: slow = 4, fast = null
+	• Loop ends (fast is null). Returns slow (node 4, the second middle).
