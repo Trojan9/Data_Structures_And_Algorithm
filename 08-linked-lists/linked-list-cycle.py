@@ -44,3 +44,19 @@ Imagine a list where the 5th node points back to the 1st node (1 -> 2 -> 3 -> 4 
 • Step 4: slow goes to 5, fast goes to 4. (Distance apart: 4)
 • Step 5: slow goes to 1, fast loops around to 1. They meet!
 No matter how large the loop is or how far back it connects, the pointers will always meet as long as a cycle exists.
+
+                                                                                                                            
+                                                                                                                            
+                                                                                                                            
+#Alternative Approach: Hash Set (O(n) Time, O(n) Space)
+                                                                                                                            
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        seen = set()
+        cur = head
+        while cur:
+            if cur in seen:
+                return True
+            seen.add(cur)
+            cur = cur.next
+        return False
