@@ -24,4 +24,57 @@ class Solution(object):
         root.left=root.right
         root.right=temp
         return root
-    
+
+
+
+#using bfs ..deque
+        ### make sure to invert the left and right before pushing the child nodes into the queue
+##explanation
+        original......1 goes in....
+         1
+        / \
+       2   3
+      / \
+     4   5
+
+           step 2   .......invert...left to right....then add the children if not none...so right is now 2 and we add the child....4 and 5
+             1
+            / \
+           3   2
+              / \
+             4   5
+step 3
+             1
+            / \
+           3   2
+              / \
+             5   4
+           
+  ###more understanding         
+def invertTree(root):
+
+    # If tree is empty
+    if root is None:
+        return
+
+    q = deque()
+    q.append(root)
+
+    while len(q) > 0:
+
+        # Get the front node
+        curr = q.popleft()
+
+        # Swap left and right child
+        curr.left, curr.right = curr.right, curr.left
+
+        # Push left child
+        if curr.left is not None:
+            q.append(curr.left)
+
+        # Push right child
+        if curr.right is not None:
+            q.append(curr.right)
+
+
+
