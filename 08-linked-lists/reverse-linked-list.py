@@ -3,6 +3,32 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+
+##### Original:   1 → 2 → 3 → 4 → 5 → None
+
+###using 3 pointers window
+
+prev    current .    next
+null ->    1    ->    2
+
+##reverse it...that arrow is the front, move to point to back...prev..instead of next
+
+....current.next= prev
+
+##then move the sliding window pointers forward....prev becomes current....current becomes next...then next becomes the untouch value in front
+prev = current 
+current = next
+next = current.next
+
+##then repeat till current is null
+
+time = 0(n)
+space = 0(1)
+
+
+###easiest.....this the new explanation
+https://www.youtube.com/watch?v=auoTGovuo9A
 class Solution(object):
     def reverseList(self, head):
         """
@@ -16,16 +42,16 @@ class Solution(object):
         current=head
         while current:
             #store the next value somewhere
-            temp=current.next
+            next =current.next
             #make current ref to be none
-            current.next=prev
+            current.next = prev
             #now current becomes our prev
             prev=current
             #make next value we stored above the current
-            current=temp
-        #after make the last prev our head
-        head=prev
-        return head
+            current = next
+
+        #prev will point to new head now
+        return prev
             
 
 
