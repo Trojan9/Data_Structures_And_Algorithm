@@ -28,4 +28,19 @@ class Solution(object):
         #we start from 1 because of 1+hl or 1+hr
         dfs(root,1)
         return self.maximum
+
+
+
+#use same as finding diameter of tree...check code for explanation
+
+def maxDepth(root):
+    # Base Case: If the node is empty, its depth is 0
+    if not root:
+        return 0
         
+    # Recurse down both sides
+    left_depth = maxDepth(root.left)
+    right_depth = maxDepth(root.right)
+    
+    # Take the larger depth and add 1 for the current node
+    return max(left_depth, right_depth) + 1
