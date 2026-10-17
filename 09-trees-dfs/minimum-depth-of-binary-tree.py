@@ -55,10 +55,33 @@ class Solution(object):
         while qu:
             node,num=qu.popleft()
             if not node.left and not node.right:
-                return num
+                return num  #minimum depth is the first node without child...immediately we encountr that, we ill return....just for bfs
             #not don't use the elif..it will perform just one of it
             if node.left:
                 qu.append((node.left,num+1))#don't forget the bracket for tuple
             if node.right:
                 qu.append((node.right,num+1))#don't forget the bracket for tuple
         return -1
+
+
+
+
+def minDepth(root):
+    # Base Case 1: Empty tree has a depth of 0
+    if not root:
+        return 0
+        
+    # Base Case 2: Leaf node has a depth of 1
+    if not root.left and not root.right:
+        return 1
+        
+    # If left child is missing, we must force traversal down the right side
+    if not root.left:
+        return minDepth(root.right) + 1
+        
+    # If right child is missing, we must force traversal down the left side
+    if not root.right:
+        return minDepth(root.left) + 1
+        
+    # If both children exist, take the minimum of both sides
+    return min(minDepth(root.left), minDepth(root.right)) + 1
