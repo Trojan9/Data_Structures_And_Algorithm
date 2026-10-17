@@ -15,8 +15,7 @@ class Solution(object):
 
         #using the depth first approach
         def dfs(node,h):
-            if node==None:
-                
+            if node==None:     
                 return 
             if not node.left and not node.right:
                 self.result=min(self.result,h)
