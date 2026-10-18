@@ -1,3 +1,36 @@
+
+The Fundamental Rule of a BST
+
+For a binary tree to be a valid Binary Search Tree, it must act like a perfectly sorted filing system:
+• Everything to the left of a number must be strictly smaller than that number.
+• Everything to the right of a number must be strictly larger than that number.
+This rule doesn't just apply to immediate children; it applies to every descendant down the line.
+
+Why a "Simple Check" Fails
+
+It is tempting to just look at a parent node, check if its left child is smaller, and check if its right child is bigger. 
+However, a local check isn't enough.
+Take a look at this flawed tree:
+text
+     10
+    /  \
+   5    15
+       /  \
+      3    20   <-- Look closely at the number 3!
+Use code with caution.
+• If you only check 10, its children are 5 and 15. (Looks valid!)
+• If you only check 15, its children are 3 and 20. (Looks valid!)
+But notice the 3. It is in the right-hand subtree of 10. 
+Because it sits on the right side of 10, the entire system breaks unless that number is greater than 10. 
+If you were searching this tree for the number 3, your search algorithm would look at 10, say "3 is smaller than 10, let's look left!", 
+and it would completely miss the 3 hidden on the right side.
+
+
+
+
+
+
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -13,7 +46,7 @@ class Solution:
             if not p:
                 return True
             #then we check if any node doesn't adhere left< val < right
-            if not (left<p.val and p.val<right):
+            if not (left< p.val < right):
                 return False
             #return the and operator for both node.left and node.right
             #when we move left, we update the right pointer to present node val,and leave the left pointer val....when we move right we update the left pointer to present node value and leave the right pointer val
@@ -82,4 +115,47 @@ min_val < node.val < max_val
 Left child: max becomes node.val
 
 Right child: min becomes node.val
+
+
+
+
+
+Dry Run 1: A Valid BST (True)
+
+Let's track the execution flow using the example root = [2, 1, 3].
+     2
+    / \
+   1   3
+1. Initial Call: valid(Node(2), -∞, ∞)
+	• Is -∞ < 2 < ∞? Yes.
+	• Recursively split into left and right subtrees.
+2. Left Child Call: valid(Node(1), -∞, 2)
+	• The maximum value is now updated to the parent's value (2).
+	• Is -∞ < 1 < 2? Yes.
+	• Check child nodes: valid(None, -∞, 1) and valid(None, 1, 2). Both reach the base case (if not node) and return True.
+	• Returns True back to the root.
+3. Right Child Call: valid(Node(3), 2, ∞)
+	• The minimum value is now updated to the parent's value (2).
+	• Is 2 < 3 < ∞? Yes.
+	• Check child nodes: valid(None, 2, 3) and valid(None, 3, ∞). Both return True.
+	• Returns True back to the root.
+4. Final Conclusion: Both paths return True, so the overall function evaluates to True.
+
+Dry Run 2: An Invalid BST (False)
+
+Let's see how the boundary constraints catch a hidden violation using root = [5, 1, 4, null, null, 3, 6].
+     5
+    / \
+   1   4
+      / \
+     3   6
+Note: Looking locally at node 4, its children 3 (left) and 6 (right) seem valid. However, node 3 is sitting in the right subtree of 5, which means it must be greater than 5. This is a global violation.
+1. Initial Call: valid(Node(5), -∞, ∞)
+	• Is -∞ < 5 < ∞? Yes.
+2. Left Child Call: valid(Node(1), -∞, 5)
+	• Is -∞ < 1 < 5? Yes. (Its children return True). Returns True.
+3. Right Child Call: valid(Node(4), 5, ∞)
+	• Is 5 < 4 < ∞? No! 4 is not greater than the lower bound of 5.
+	• The function immediately triggers return False.
+
 
