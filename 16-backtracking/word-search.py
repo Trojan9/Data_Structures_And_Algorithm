@@ -82,5 +82,46 @@ class Solution:
         return False
             
     #time complexity (o*N*M*dfs)*4^len(word)
-            
-        
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #46: Word Search (Medium)  [Graphs]
+#
+from typing import List
+
+# Brief: True if a word can be traced through adjacent cells, no reuse.
+#
+# In plain words: can you spell the word by stepping between touching cells (up/down/left/right),
+# never reusing a cell? Try starting from every cell. From a cell, if it's the letter you need,
+# mark it used and try all four neighbours for the next letter; if none work, unmark it
+# (backtrack) and let other attempts use it.
+#
+# Why it works: marking enforces "no reuse" within one attempt; unmarking on the way out frees the
+# cell for other paths. Trying every start covers all placements.
+#
+# Algorithm
+# 1. DFS(r, c, i). 2. `i == len(word)` → True. 3. Out of bounds / wrong letter / in path → False.
+#    4. Mark, recurse 4 ways, unmark.
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        ROWS, COLS = len(board), len(board[0])
+        path = set()
+        def dfs(r, c, i):
+            if i == len(word):
+                return True
+            if (r < 0 or c < 0 or r >= ROWS or c >= COLS
+                    or word[i] != board[r][c] or (r, c) in path):
+                return False
+            path.add((r, c))
+            res = (dfs(r + 1, c, i + 1) or dfs(r - 1, c, i + 1)
+                   or dfs(r, c + 1, i + 1) or dfs(r, c - 1, i + 1))
+            path.remove((r, c))          # backtrack: free this cell
+            return res
+        for r in range(ROWS):
+            for c in range(COLS):
+                if dfs(r, c, 0):
+                    return True
+        return False
+
+# Complexity: Time O(m·n·4^L), Space O(L).

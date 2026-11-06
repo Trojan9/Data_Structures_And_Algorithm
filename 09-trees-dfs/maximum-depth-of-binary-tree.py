@@ -44,3 +44,34 @@ def maxDepth(root):
     
     # Take the larger depth and add 1 for the current node
     return max(left_depth, right_depth) + 1
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #34: Maximum Depth (Easy)  [Trees]
+#
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from typing import Optional
+
+# Brief: Depth of the longest root-to-leaf path.
+#
+# In plain words: how many levels deep is the tree? A node's depth is 1 (itself) plus the depth of
+# its deeper child; an empty spot is 0. Recursion adds it up from the bottom.
+#
+# Why it works: the longest path through a node goes via its taller subtree, plus the node itself.
+#
+# Algorithm
+# 1. None → 0. 2. `1 + max(left, right)`.
+
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+
+# Complexity: Time O(n), Space O(h).

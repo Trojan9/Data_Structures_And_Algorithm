@@ -86,5 +86,41 @@ class Solution:
 #note: if you are added to use dfs just change popleft() to pop() , so you pop at the end instead of at the front....doing this we are using dfs iteratively instead of recursively
 
 
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #42: Number of Islands (Medium)  [Graphs]
+#
+from typing import List
 
+# Brief: Count islands of 4-connected "1"s.
+#
+# In plain words: count blobs of connected land in a grid of land ("1") and water ("0"). Scan
+# every cell; when you hit unvisited land, that's a new island, so add 1 and "flood fill" it,
+# visit every connected land cell and mark it so it's not counted again.
+#
+# Why it works: flood-filling the whole blob on first contact means each island is counted exactly
+# once no matter how big it is.
+#
+# Algorithm
+# 1. Scan cells. 2. On unvisited land, `count += 1` and DFS/BFS the blob, marking visited.
 
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if not grid:
+            return 0
+        rows, cols = len(grid), len(grid[0])
+        visited = set()
+        islands = 0
+        def dfs(r, c):
+            if (r < 0 or c < 0 or r >= rows or c >= cols
+                    or grid[r][c] == "0" or (r, c) in visited):
+                return
+            visited.add((r, c))
+            dfs(r + 1, c); dfs(r - 1, c); dfs(r, c + 1); dfs(r, c - 1)
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1" and (r, c) not in visited:
+                    islands += 1
+                    dfs(r, c)
+        return islands
+
+# Complexity: Time O(m·n), Space O(m·n).

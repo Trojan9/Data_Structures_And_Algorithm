@@ -60,3 +60,39 @@ class Solution:
             seen.add(cur)
             cur = cur.next
         return False
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #29: Linked List Cycle (Easy)  [Linked List]
+#
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional
+
+# Brief: True if the list has a cycle.
+#
+# In plain words: does the chain loop back on itself? Two walkers, slow (1 step) and fast (2
+# steps). If the chain ends, fast reaches the end, no loop. If there's a loop, fast keeps circling
+# and eventually catches slow, they land on the same node.
+#
+# Why it works: inside a loop, fast gains one step on slow each move, so the gap shrinks to zero
+# and they meet. No extra memory needed, unlike a visited-set.
+#
+# Algorithm
+# 1. `slow=fast=head`. 2. While fast and fast.next: slow+1, fast+2. 3. Equal → True.
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
+# Complexity: Time O(n), Space O(1).

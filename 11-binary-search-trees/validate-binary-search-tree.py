@@ -159,3 +159,42 @@ Note: Looking locally at node 4, its children 3 (left) and 6 (right) seem valid.
 	• The function immediately triggers return False.
 
 
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #37: Validate Binary Search Tree (Medium)  [Trees]
+#
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from typing import Optional
+
+# Brief: True if a valid BST.
+#
+# In plain words: a BST means for every node, *everything* in its left subtree is smaller and
+# everything in its right is bigger, not just the direct children. Checking only children misses
+# cases: a node deep in a left subtree must still beat an ancestor far above. So carry an allowed
+# `(low, high)` range down: going left caps the high at the node's value, going right raises the
+# low. A node outside its range makes the tree invalid.
+#
+# Why it works: the range accumulates every ancestor constraint, so a value illegal relative to a
+# distant ancestor is caught.
+#
+# Algorithm
+# 1. Recurse with bounds (−inf, +inf). 2. Require `low < val < high`. 3. Left gets `(low, val)`,
+#    right `(val, high)`.
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def valid(node, left, right):
+            if not node:
+                return True
+            if not (left < node.val < right):
+                return False
+            return (valid(node.left, left, node.val)
+                    and valid(node.right, node.val, right))
+        return valid(root, float("-inf"), float("inf"))
+
+# Complexity: Time O(n), Space O(h).
