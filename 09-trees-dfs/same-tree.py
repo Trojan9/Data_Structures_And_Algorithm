@@ -65,5 +65,39 @@ class Solution(object):
         #then we compare value of left nodes to value of right nodes
         #they must be true and true ..else it returns false
         return (self.isSameTree(p.left,q.left) and self.isSameTree(p.right,q.right))
-        
-        
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #35: Same Tree (Easy)  [Trees]
+#
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from typing import Optional
+
+# Brief: True if two trees match in structure and values.
+#
+# In plain words: are two trees identical? Compare the roots; if they match, recursively compare
+# their left children and their right children. Both empty = match; one empty or values differ =
+# not a match.
+#
+# Why it works: two trees are identical iff roots match and both subtrees match, a naturally
+# recursive definition with clean base cases.
+#
+# Algorithm
+# 1. Both None → True. 2. One None or values differ → False. 3. Recurse left and right.
+
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
+        if not p or not q or p.val != q.val:
+            return False
+        return (self.isSameTree(p.left, q.left)
+                and self.isSameTree(p.right, q.right))
+
+# Complexity: Time O(n), Space O(h).

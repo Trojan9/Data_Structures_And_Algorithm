@@ -197,5 +197,36 @@ Complexity Analysis
 • Space Complexity: O(H) where H is the height of the tree. This space is occupied by the recursive call stack. In the worst-case scenario (a skewed tree that looks like a linked list), it becomes O(N).
 
 
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #33: Invert Binary Tree (Easy)  [Trees]
+#
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 
+from typing import Optional
 
+# Brief: Mirror the tree (swap every left/right).
+#
+# In plain words: flip the tree left-to-right. At every node, swap its two children; do that
+# everywhere (recursion) and the whole tree mirrors.
+#
+# Why it works: mirroring means every node's subtrees swap; doing the swap at each node is exactly
+# that.
+#
+# Algorithm
+# 1. None → None. 2. Swap children. 3. Recurse both.
+
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        root.left, root.right = root.right, root.left
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+        return root
+
+# Complexity: Time O(n), Space O(h).

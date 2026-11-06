@@ -27,4 +27,36 @@ class Solution:
         #at the end stack should be empty..if not its not valid
         return len(stack)==0
 
-        
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #17: Valid Parentheses (Easy)  [Stack]
+#
+# Brief: True if brackets `()[]{}` close in the right type and order. `"([])"` True, `"([)]"`
+# False.
+#
+# In plain words: are the brackets properly matched and nested? Push every opening bracket onto a
+# stack (a pile). On a closing bracket, the top of the pile must be its matching opener, pop it.
+# At the end the pile must be empty.
+#
+# Why it works: brackets close in reverse order of opening (last opened closes first), which is
+# exactly how a stack behaves. A leftover on the pile means something was never closed.
+#
+# Algorithm
+# 1. Map closer → opener. 2. Closer: top must be its opener, else fail. 3. Opener: push. 4. Return
+#    stack empty.
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        closeToOpen = {")": "(", "]": "[", "}": "{"}
+        for c in s:
+            if c in closeToOpen:
+                if stack and stack[-1] == closeToOpen[c]:
+                    stack.pop()
+                else:
+                    return False
+            else:
+                stack.append(c)
+        return True if not stack else False
+
+# Complexity: Time O(n), Space O(n).

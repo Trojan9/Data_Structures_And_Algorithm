@@ -21,4 +21,28 @@ class Solution(object):
             one=one+two
             two=temp
         return one
-        
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #49: Climbing Stairs (Easy)  [Dynamic Programming]
+#
+# Brief: Climb 1 or 2 steps at a time; ways to reach step `n`. `n=3` → `3`.
+#
+# In plain words: how many ways up n stairs taking 1 or 2 at a time? Your last move onto step n
+# came from step n−1 (a single) or n−2 (a double), so ways(n) = ways(n−1) + ways(n−2), the
+# Fibonacci pattern. Keep just the last two numbers.
+#
+# Why it works: those two groups of paths don't overlap and cover everything, so you add them.
+# Each step depends only on the previous two.
+#
+# Algorithm
+# 1. Track the previous two counts. 2. Slide forward n times, each new value their sum.
+
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        one, two = 1, 1
+        for _ in range(n - 1):
+            one, two = one + two, one     # new ways = sum of the previous two
+        return one
+
+# Complexity: Time O(n), Space O(1).

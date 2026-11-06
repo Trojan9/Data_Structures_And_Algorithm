@@ -84,3 +84,39 @@ class Solution:
                 nums[i] = allSum
 
         return nums
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #6: Product of Array Except Self (Medium)  [Arrays and Hashing]
+#
+from typing import List
+
+# Brief: Each slot = product of all others, no division. `[1,2,3,4]` → `[24,12,8,6]`.
+#
+# In plain words: at each position, multiply every *other* number. The answer at i is (everything
+# to the left of i, multiplied) × (everything to the right of i, multiplied), because those two
+# groups together are every element except i. One pass left to right fills the left products; one
+# pass right to left multiplies in the right products.
+#
+# Why it works: you write the left-product into a slot *before* folding that slot's own number
+# into the running product, so a slot never includes itself. The second pass does the same from
+# the right. No division, so zeros are no problem.
+#
+# Algorithm
+# 1. `res` all 1s. 2. Left pass: store prefix, then `prefix *= nums[i]`. 3. Right pass: `res[i] *=
+#    suffix`, then `suffix *= nums[i]`.
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1] * len(nums)
+        prefix = 1
+        for i in range(len(nums)):
+            res[i] = prefix              # product of everything BEFORE i
+            prefix *= nums[i]
+        suffix = 1
+        for i in range(len(nums) - 1, -1, -1):
+            res[i] *= suffix             # multiply in product of everything AFTER i
+            suffix *= nums[i]
+        return res
+
+# Complexity: Time O(n), Space O(1) extra (output aside).

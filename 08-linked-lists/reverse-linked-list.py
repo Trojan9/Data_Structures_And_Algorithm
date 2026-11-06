@@ -95,4 +95,38 @@ class Solution:
 
         return reversinNode
 
-        
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #27: Reverse Linked List (Easy)  [Linked List]
+#
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional
+
+# Brief: Reverse a singly linked list, return the new head.
+#
+# In plain words: flip the chain so it runs the other way. Walk along turning each node's arrow to
+# point at the node behind it. Carry `prev` (the part already flipped) and `curr` (the node you're
+# flipping); save `curr.next` before overwriting it or you lose the rest.
+#
+# Why it works: reversal means every arrow turns around. When `curr` falls off the end, `prev` is
+# the last original node, now the new head.
+#
+# Algorithm
+# 1. `prev=None`, `curr=head`. 2. Save next, flip, advance both. 3. Return `prev`.
+
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev, curr = None, head
+        while curr:
+            nxt = curr.next       # save the rest before overwriting
+            curr.next = prev      # flip
+            prev = curr           # reversed part grows
+            curr = nxt            # advance
+        return prev
+
+# Complexity: Time O(n), Space O(1).

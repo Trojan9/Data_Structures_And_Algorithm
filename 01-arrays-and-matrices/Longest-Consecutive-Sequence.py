@@ -61,3 +61,37 @@ Algorithm
   While num + length exists in the set, increase length.
   Update longest with the maximum length found.
 -Return longest after scanning all numbers.
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #8: Longest Consecutive Sequence (Medium)  [Arrays and Hashing]
+#
+from typing import List
+
+# Brief: Longest run of consecutive integers, O(n). `[100,4,200,1,3,2]` → `4` (1,2,3,4).
+#
+# In plain words: find the longest chain of back-to-back integers, in any order. Put everything in
+# a set. Only start counting a chain from a number whose "one below" is missing (so it's a true
+# start), then count upward while the next integer exists. `1` starts a chain (0 is absent), count
+# 1,2,3,4 → length 4.
+#
+# Why it works: counting only from starts means each chain is counted once, not re-counted from
+# every member, so each number is touched at most twice overall → O(n).
+#
+# Algorithm
+# 1. Build a set. 2. For each n where `n-1` is absent, count up while `n+length` exists. 3. Track
+#    the max.
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        numSet = set(nums)
+        longest = 0
+        for n in numSet:
+            if (n - 1) not in numSet:        # n is a chain's start
+                length = 1
+                while (n + length) in numSet:
+                    length += 1
+                longest = max(longest, length)
+        return longest
+
+# Complexity: Time O(n), Space O(n).

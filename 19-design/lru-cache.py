@@ -115,3 +115,41 @@ class LRUCache:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+# ==================== Amazon SDE-I 50 version (with explanation) ====================
+# Amazon SDE-I 50, #32: LRU Cache (Medium)  [Linked List]
+#
+from collections import OrderedDict
+
+# Brief: Fixed-capacity cache, O(1) get/put, evict least recently used when full.
+#
+# In plain words: a cache holding a fixed number of items that throws out the least recently used
+# when full. You need two fast things: look up a key, and know which key is stalest. Python's
+# `OrderedDict` is a dict that remembers order, treat the front as oldest and the back as newest.
+# Every access moves the key to the back; when over capacity, drop the front.
+#
+# Why it works: `move_to_end` keeps the order meaning exactly "least → most recently used", so the
+# stalest item is always the front, making eviction O(1).
+#
+# Algorithm
+# 1. get: present → move to end, return; else -1. 2. put: set, move to end. 3. Over capacity → pop
+#    front.
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = OrderedDict()           # front = least recent, back = most recent
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)
+        return self.cache[key]
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.cap:
+            self.cache.popitem(last=False)   # evict least recently used
+
+# Complexity: Time O(1) per op, Space O(capacity).
