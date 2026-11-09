@@ -1,3 +1,5 @@
+# Backtracking strategies (branch and bound, kill and bound) explained: https://www.youtube.com/watch?v=DKCbsiDBN6c
+#
 # looking at this solution to the question
 # we start with an empty list of list as res [[]]
 # then loop through the array  arr given in question
@@ -119,3 +121,64 @@ class Solution:
 #   DFS:       [1,2,3], [1,2], [1,3], [1], [2,3], [2], [3], []   (always tries "take" before "skip")
 
 # Complexity: Time O(n·2ⁿ), Space O(n) excluding output.
+
+
+# ==================== BFS version (queue) ====================
+#
+# Same include / exclude idea as the DFS version, but instead of recursion we keep a queue of
+# partial decisions. Each queue item is (i, cur): "I've decided elements 0..i-1, and cur is what
+# I took so far". Popping an item makes the decision for nums[i] both ways and pushes two new
+# items. When i == len(nums) every element has been decided, so cur is a finished subset.
+#
+# Why no .copy() here: cur + [nums[i]] builds a NEW list, so each queue item owns its own list.
+# Nothing is shared and nothing is popped/undone, which is why there's no backtracking step.
+
+from collections import deque
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        q = deque([(0, [])])                 # (index, current subset)
+        while q:
+            i, cur = q.popleft()
+            if i == len(nums):               # decided every element
+                res.append(cur)
+                continue
+            q.append((i + 1, cur))               # exclude nums[i]
+            q.append((i + 1, cur + [nums[i]]))   # include nums[i]
+        return res
+
+# Dry run: nums = [1, 2, 3]   (queue shown front -> back, as (i, cur))
+#
+#   pop (0, [])        i=0, decide 1:  push (1, []), (1, [1])
+#                      q = (1,[]) (1,[1])
+#   pop (1, [])        decide 2:       push (2, []), (2, [2])
+#                      q = (1,[1]) (2,[]) (2,[2])
+#   pop (1, [1])       decide 2:       push (2, [1]), (2, [1,2])
+#                      q = (2,[]) (2,[2]) (2,[1]) (2,[1,2])
+#   -- level i=2: all four 2-element decisions made, now decide 3 for each --
+#   pop (2, [])        push (3, []), (3, [3])
+#   pop (2, [2])       push (3, [2]), (3, [2,3])
+#   pop (2, [1])       push (3, [1]), (3, [1,3])
+#   pop (2, [1,2])     push (3, [1,2]), (3, [1,2,3])
+#                      q = (3,[]) (3,[3]) (3,[2]) (3,[2,3]) (3,[1]) (3,[1,3]) (3,[1,2]) (3,[1,2,3])
+#   -- level i=3: every element decided, each pop is a finished subset --
+#   pop (3, [])        record []
+#   pop (3, [3])       record [3]
+#   pop (3, [2])       record [2]
+#   pop (3, [2,3])     record [2,3]
+#   pop (3, [1])       record [1]
+#   pop (3, [1,3])     record [1,3]
+#   pop (3, [1,2])     record [1,2]
+#   pop (3, [1,2,3])   record [1,2,3]
+#
+#   res = [[], [3], [2], [2,3], [1], [1,3], [1,2], [1,2,3]]   -> 8 subsets
+#
+# It's the same decision tree as the DFS version, just explored level by level (all decisions
+# about 1, then all about 2, then all about 3) instead of going deep down one branch first.
+# Exclude is pushed before include, so at every level the "skip" child comes out first.
+#
+# Complexity: Time O(n·2ⁿ). Space O(n·2ⁿ): the last level holds all 2ⁿ partial subsets in the
+# queue at once, whereas DFS only ever holds one path of length n. That's the trade-off:
+# BFS is easier to trace, DFS uses far less memory.
+
