@@ -125,3 +125,52 @@ class Solution:
         return False
 
 # Complexity: Time O(m·n·4^L), Space O(L).
+
+
+# ==================== Follow-up: diagonals allowed (8 directions) ====================
+#
+# If the interviewer says diagonal moves are allowed, check 8 directions instead of 4 by adding
+# the four diagonals. Everything else (marking, backtracking, the success condition) stays the
+# same. The cleanest change is to loop over a list of direction offsets instead of hand-writing
+# each recursive call.
+#
+# The first four DIRS entries are the original down/up/right/left. The last four are diagonals,
+# where both coordinates change: (1,1) is down-right, (-1,-1) is up-left, and so on.
+#
+# Why nothing else changes: the algorithm is "from the current cell, try every allowed neighbour
+# for the next letter". Diagonals only change which neighbours are allowed, so only the direction
+# list changes. Marking (r, c) in path still stops a cell being reused, and unmarking on the way
+# out still frees it for other paths.
+#
+# Bounds: diagonals need no extra check. A diagonal changes both r and c by 1, and the existing
+# r/c bounds check already guards both.
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        ROWS, COLS = len(board), len(board[0])
+        path = set()
+        # 8 directions: the 4 straight + the 4 diagonals
+        DIRS = [(1, 0), (-1, 0), (0, 1), (0, -1),     # down, up, right, left
+                (1, 1), (1, -1), (-1, 1), (-1, -1)]   # the four diagonals
+        def dfs(r, c, i):
+            if i == len(word):
+                return True
+            if (r < 0 or c < 0 or r >= ROWS or c >= COLS
+                    or word[i] != board[r][c] or (r, c) in path):
+                return False
+            path.add((r, c))
+            for dr, dc in DIRS:
+                if dfs(r + dr, c + dc, i + 1):   # try all 8 neighbours for the next letter
+                    path.remove((r, c))          # found it; still unmark on the way out
+                    return True
+            path.remove((r, c))                  # backtrack
+            return False
+        for r in range(ROWS):
+            for c in range(COLS):
+                if dfs(r, c, 0):
+                    return True
+        return False
+
+# Complexity: Time O(m·n·8^L) instead of O(m·n·4^L), where L is the word length. Up to 8
+# branches per step means exponentially more paths, though the early exits (wrong letter, out of
+# bounds, already in path) prune most of them in practice. Space O(L) for the path and recursion.
