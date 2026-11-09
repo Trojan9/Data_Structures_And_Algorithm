@@ -1,4 +1,5 @@
 # Amazon SDE-I 50, #40: Construct Tree from Preorder and Inorder (Medium)  [Trees]
+# Video explanation: https://www.youtube.com/watch?v=PoBGyrIWisE
 #
 # Definition for a binary tree node.
 # class TreeNode:
