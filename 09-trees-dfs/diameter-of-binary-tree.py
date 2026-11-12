@@ -30,17 +30,19 @@ class Solution(object):
                                                     # so left+right = number of EDGES on the longest path through this node
 
             #this means height of the children node + 1(height to reach the parent)
+            #     1        ##here height of children for 1 is ( 2 on left and 3 on the right) now + 1 height needed to get to parent
+            #              ##1+max(2,3) = 4    diameter here: 2+3 = 5 (4-2-1-3-5-6), the answer
+            #   /    \
+            #  2      3     ...1+max(1,2)= 3          diameter here: 1+2 = 3        ^
+            # /      /  \                                                           |
+            #4       8    5....1+max(0,1) = 1+1 =2   diameter here: 0+1 = 1        |
+            #1+max(0,0)    \                                                       |
+            #   =1          6....1+max(0,0)= 1+0= 1  diameter here: 0+0 = 0        |  start bottom to up to understand
             #
-            #   heights with return 0 (counting nodes), read from the BOTTOM up:
-            #
-            #          1           1+max(2,3) = 4     diameter here: 2+3 = 5  (4-2-1-3-5-6)
-            #        /    \
-            #       2      3       2: 1+max(1,0) = 2     3: 1+max(1,2) = 3
-            #      /      /  \
-            #     4      8    5    4: 1   8: 1   5: 1+max(0,1) = 2
-            #                  \
-            #                   6  6: 1+max(0,0) = 1  (both children None -> 0, 0)
-            #                                                       ^ start at the bottom and go up
+            #(2 is 1+max(1,0) = 2, and 8 is 1+max(0,0) = 1 like 4)
+            #(the None below every leaf returns 0: that's the 'one step further' level where it turns and goes up)
+            #(the OLD -1 version gave: 6=0, 5=1, 4=0, 8=0, 3=2, 2=1, 1=3, one less each because it counted
+            # edges. Those heights were right, but then the diameter needs left+right+2, not left+right)
 
             return 1+max(left,right) #from 1+hr or 1+hl..this is the height.....so each step returns this....max
         dfs(root)
