@@ -46,6 +46,26 @@ returns 1 + max(1, 2) = 3            ← root answers LAST
 
 The root is the first call made and the last one to return.
 
+**It goes one step PAST the last level.** A leaf still calls `dfs(leaf.left)` and
+`dfs(leaf.right)`. Both are `None`, so every path ends one level below the leaves. That
+`None` level is where the early exit runs, and it's where the answers start going back up:
+
+```
+            1
+           / \
+          2   3
+         / \  / \
+        4  5 N   N        ← 3 is a leaf, but dfs still visits its None children
+       /\  /\
+      N N  N N            ← the "one step further" level: early exit, return the base value
+                            everything after this flows UPWARD
+```
+
+**The base value and the combine step must match.** In
+[diameter](diameter-of-binary-tree.py), `return 0` (height counts nodes) goes with
+`left + right`, but `return -1` (height counts edges) needs `left + right + 2`. Mixing them
+gives a wrong answer with no error.
+
 ### Rule 2: ALWAYS handle the bottom (out of the tree) FIRST, and return something
 
 Below every leaf there's an empty spot (`None`). Every path reaches it, so the **first line**
