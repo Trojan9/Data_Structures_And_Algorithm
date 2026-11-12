@@ -104,3 +104,115 @@ class Solution(object):
 #
 # Trade-off: the result SHARES nodes with the input trees. Changing tree1's node 3 later would also
 # change the merged tree. The copying versions above are O(n + m) but give a fully separate tree.
+
+
+# ==================== BFS version (queue of PAIRS, merge INTO tree1) ====================
+# Idea: walk both trees level by level AT THE SAME TIME. Each queue entry is a PAIR of nodes
+# that sit in the same position in both trees, e.g. (tree1's root, tree2's root), then
+# (tree1's root.left, tree2's root.left), and so on.
+#
+# Instead of building a new tree, we write the answer straight INTO tree1:
+#   - add tree2's value onto tree1's node
+#   - if tree1 is missing a child that tree2 has, just plug tree2's whole subtree in
+#
+# For each pair we pop, look at the LEFT children and then the RIGHT children. There are only
+# 3 cases per side:
+#
+#   tree1 child | tree2 child | what to do
+#   ------------+-------------+-----------------------------------------------------------
+#   yes         | yes         | both exist: put the pair in the queue, they get merged later
+#   no          | yes / no    | n1.left = n2.left: plug in tree2's subtree (None if neither)
+#   yes         | no          | nothing: tree1's child is already where it should be
+
+from collections import deque
+
+class Solution(object):
+    def mergeTrees(self, root1, root2):
+        if not root1:                           # tree1 empty: the answer is just tree2
+            return root2
+        if not root2:                           # tree2 empty: the answer is just tree1
+            return root1
+
+        q = deque([(root1, root2)])             # start with the two roots as a pair
+        while q:
+            n1, n2 = q.popleft()                # a pair at the same position (both always exist,
+                                                # because we only ever queue pairs where both exist)
+            n1.val += n2.val                    # merge: tree1's node now holds the sum
+
+            # ----- LEFT children -----
+            if n1.left and n2.left:             # case 1: both have a left child
+                q.append((n1.left, n2.left))    #   -> merge that pair when it's popped
+            elif not n1.left:                   # case 2: tree1 has no left child
+                n1.left = n2.left               #   -> borrow tree2's left subtree (or None)
+            # case 3: only tree1 has a left child -> keep it, nothing to do
+
+            # ----- RIGHT children (same 3 cases) -----
+            if n1.right and n2.right:           # case 1: both have a right child
+                q.append((n1.right, n2.right))
+            elif not n1.right:                  # case 2: tree1 has no right child
+                n1.right = n2.right             #   -> borrow tree2's right subtree (or None)
+            # case 3: only tree1 has a right child -> keep it
+
+        return root1                            # tree1 has become the merged tree
+
+# Complexity: Time O(min(n, m)): only positions where BOTH trees have a node are queued;
+# borrowed subtrees are plugged in whole, never walked. Space O(width) for the queue.
+#
+# Note: this CHANGES tree1 (in place) and shares nodes with tree2 (borrowed subtrees). The first
+# two solutions in this file build a brand new tree and leave both inputs untouched.
+#
+# ---------------------------------------------------------------------------------------------
+# Dry run (LeetCode example 1)
+# ---------------------------------------------------------------------------------------------
+#   tree1:      1            tree2:      2            expected:      3
+#              / \                      / \                         / \
+#             3   2                    1   3                       4   5
+#            /                          \   \                     / \   \
+#           5                            4   7                   5   4   7
+#
+#   start:  q = [ (1,2) ]
+#
+#   step 1: pop (1,2)
+#           value: 1 + 2 = 3              tree1 root is now 3
+#           left:  tree1 has 3, tree2 has 1   -> case 1, queue (3,1)
+#           right: tree1 has 2, tree2 has 3   -> case 1, queue (2,3)
+#           q = [ (3,1), (2,3) ]
+#
+#                   3                     (tree1 so far)
+#                  / \
+#                 3   2
+#                /
+#               5
+#
+#   step 2: pop (3,1)
+#           value: 3 + 1 = 4
+#           left:  tree1 has 5, tree2 has None -> case 3, keep 5
+#           right: tree1 has None, tree2 has 4 -> case 2, plug in 4: n1.right = 4
+#           q = [ (2,3) ]
+#
+#                   3
+#                  / \
+#                 4   2
+#                / \
+#               5   4      <- 4 borrowed from tree2
+#
+#   step 3: pop (2,3)
+#           value: 2 + 3 = 5
+#           left:  tree1 has None, tree2 has None -> case 2, n1.left = None (no change)
+#           right: tree1 has None, tree2 has 7    -> case 2, plug in 7: n1.right = 7
+#           q = [ ]  -> loop ends
+#
+#                   3
+#                  / \
+#                 4   5
+#                / \   \
+#               5   4   7  <- 7 borrowed from tree2
+#
+#   return root1 = [3, 4, 5, 5, 4, null, 7]   matches expected
+#
+# Notice: 5 (tree1 only) was never queued, and 4 and 7 (tree2 only) were never queued either.
+# Only the 3 positions where BOTH trees had a node went through the queue. That's why it's
+# O(min(n, m)).
+#
+# Why "elif not n1.left" also covers "neither has a child": n2.left is None too, so
+# n1.left = None changes nothing. One line handles both case 2 situations.
