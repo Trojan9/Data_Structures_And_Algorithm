@@ -31,6 +31,24 @@ class Solution(object):
         return dummy.next
         
 
+# ---------------------------------------------------------------------------------------------
+# Dry run of the set solution above: 1(a) -> 1(b) -> 2 -> 3(c) -> 3(d)
+# ---------------------------------------------------------------------------------------------
+#   start: dummy -> 1(a) -> 1(b) -> 2 -> 3(c) -> 3(d)      prev=dummy, current=1(a), set={}
+#
+#   current=1(a): 1 not in set -> add it, prev=1(a)         set={1}
+#   current=1(b): 1 IN set     -> prev.next = 2  (unlink b, prev stays 1(a))
+#                 list: dummy -> 1(a) -> 2 -> 3(c) -> 3(d)
+#   current=2:    2 not in set -> add it, prev=2            set={1,2}
+#   current=3(c): 3 not in set -> add it, prev=3(c)         set={1,2,3}
+#   current=3(d): 3 IN set     -> prev.next = None (unlink d)
+#                 list: dummy -> 1(a) -> 2 -> 3(c)
+#   current=None: loop ends
+#   return dummy.next = 1 -> 2 -> 3
+#
+# Note: prev only moves when we KEEP a node. When we unlink one, prev stays put so the next kept
+# node gets attached to it.
+
 # ==================== Better solution: use the fact that the list is SORTED ====================
 # The solution above works, but it never uses "sorted". In a sorted list, duplicates always sit
 # NEXT TO EACH OTHER (1 -> 1 -> 2 -> 3 -> 3), so we only compare a node with the node right after
