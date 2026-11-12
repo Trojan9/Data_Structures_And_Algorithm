@@ -28,11 +28,11 @@ class Solution(object):
             #this means height of the children node + 1(height to reach the parent)
               1        ##here height of children for 1 is ( 1 on left and 2 on the right) now + 1 height needed to get to parent
             /    \
-           2      3     ...1+max(0,1)= 2
-          /      /  \
-        4       8    5....1+max(-1,0) = 1+0 =1
-           1+max(-1,-1) \
-                =0       6....1+max(-1,-1)= 1-1= 0
+           2      3     ...1+max(0,1)= 2				^
+          /      /  \									|
+        4       8    5....1+max(-1,0) = 1+0 =1			|
+           1+max(-1,-1) \								| 
+                =0       6....1+max(-1,-1)= 1-1= 0		|  start button  to up to understand
         
             return 1+max(left,right) #from 1+hr or 1+hl..this is the height.....so each step returns this....max
         dfs(root)
