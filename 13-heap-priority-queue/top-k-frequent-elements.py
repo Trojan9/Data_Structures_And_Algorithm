@@ -3,6 +3,21 @@
 from typing import List
 from collections import Counter
 
+# =============================================================================================
+# KEY IDEA: A VALUE CAN NEVER APPEAR MORE TIMES THAN THE LENGTH OF THE ORIGINAL ARRAY.
+# SO EVERY FREQUENCY IS BETWEEN 1 AND len(nums).
+# SO WE CREATE ANOTHER ARRAY OF THE SAME LENGTH (+1, SO INDEX len(nums) EXISTS) AND PUT EACH
+# VALUE IN IT USING ITS FREQUENCY AS THE INDEX:  freq[how_many_times].append(value)
+# THEN READ THAT ARRAY FROM THE END (HIGHEST FREQUENCY) BACKWARDS UNTIL WE HAVE k VALUES.
+# NO SORTING NEEDED, THE INDEX IS THE ORDER -> O(n).
+#
+#   nums = [1, 1, 1, 2, 2, 3]   (length 6, so no value can appear more than 6 times)
+#   index:  0    1     2     3     4    5    6
+#   freq = [[], [3],  [2],  [1],  [],  [],  []]
+#                ^     ^     ^
+#           3 appears 1x, 2 appears 2x, 1 appears 3x
+# =============================================================================================
+#
 # Brief: Return the `k` most frequent values. `[1,1,1,2,2,3], k=2` → `[1,2]`.
 #
 # In plain words: which `k` values show up most? Count each value. Then make buckets where bucket
