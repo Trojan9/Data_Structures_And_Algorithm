@@ -24,6 +24,8 @@ from typing import Optional
 # 1. Dummy before head; `l=dummy`, `r=head`. 2. Advance `r` n times. 3. Advance both until `r` is
 #    None. 4. `l.next = l.next.next`.
 
+NOte: we are trying to remove just one node...from the nth to the end
+
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         dummy = ListNode(0, head)
