@@ -9,8 +9,28 @@
 
 ###using 3 pointers window
 
-prev    current .    next
-null ->    1    ->    2
+
+             <--
+       <--         <--
+     <--               <--
+   <--                     <--
+ <--                           <--
+--> prev    current .    next--->
+    null ->    1    ->    2
+
+1. so reverse by first keeping copy of next
+    prev = None
+    current = head
+    next = current.next
+2. then follow the allow one by one ..start from next, equate to other point in the arrow
+    
+    current.next = prev  ---first oint
+    prev = current ----second point
+    current = Next(the one stored) ---third point
+
+3. keep on with that...then return prev at the end
+
+
 
 ##reverse it...that arrow is the front, move to point to back...prev..instead of next
 
