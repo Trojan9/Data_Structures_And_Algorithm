@@ -166,3 +166,91 @@ class Solution:
 #
 # Note: the cities are labelled 1..6 above to match the video. In the code they are index 0..5,
 # so "city 1" is i = 0, "city 2" is i = 1, and so on. The steps are exactly the same.
+
+
+# =============================================================================================
+# Walkthrough 3 (how the video ends): the call stack as a LIST, with i and j on the matrix
+# =============================================================================================
+# Keep 3 things next to the matrix and update them at every step:
+#   - the state line:  province = ?; visited = set(...)
+#   - the STACK:       every dfs call that is still running (bottom = oldest, top = running now)
+#   - i and j markers: i = the row the current dfs is reading, j = the column it's checking
+#
+# A new dfs call is PUSHED onto the stack. When its row is finished it RETURNS and is POPPED,
+# and the call under it carries on from the j where it paused.
+#
+# ---- step 1 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1)                  stack:
+#                                                     dfs(i=1)      <- running
+#        j
+#      [[1,1,0,0,0,0],  1  i                        row 1, j=1: itself, skip. j=2: connected,
+#       [1,1,1,1,0,0],  2                           not visited -> push dfs(2)
+#       ...
+#
+# ---- step 2 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1,2)                stack:
+#                                                     dfs(i=1)      paused at j=2
+#                                                     dfs(i=2)      <- running
+#      [[1,1,0,0,0,0],  1
+#            j
+#       [1,1,1,1,0,0],  2  i                        row 2, j=1: visited. j=2: itself.
+#       [0,1,1,0,0,0],  3                           j=3: connected, not visited -> push dfs(3)
+#
+# ---- step 3 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1,2,3)              stack:
+#                                                     dfs(i=1)      paused at j=2
+#                                                     dfs(i=2)      paused at j=3
+#                                                     dfs(i=3)      <- running
+#       [1,1,1,1,0,0],  2
+#              j
+#       [0,1,1,0,0,0],  3  i                        row 3, j=2: visited. j=3: itself.
+#                                                   j=4,5,6: 0 -> row done -> RETURN, pop dfs(3)
+#
+# ---- step 4 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1,2,3)              stack:
+#                                                     dfs(i=1)      paused at j=2
+#                                                     dfs(i=2)      <- running again, from j=4
+#                  j
+#       [1,1,1,1,0,0],  2  i                        row 2, j=4: connected, not visited
+#                                                   -> push dfs(4)
+#
+# ---- step 5 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1,2,3,4)            stack:
+#                                                     dfs(i=1)      paused at j=2
+#                                                     dfs(i=2)      paused at j=4
+#                                                     dfs(i=4)      <- running
+#                    j
+#       [0,1,0,1,1,0],  4  i                        row 4, j=2: visited. j=4: itself.
+#                                                   j=5: connected, not visited -> push dfs(5)
+#
+# ---- step 6 ---------------------------------------------------------------------------------
+#   province = 1; visited = set(1,2,3,4,5)          stack:
+#                                                     dfs(i=1)      paused at j=2
+#                                                     dfs(i=2)      paused at j=4
+#                                                     dfs(i=4)      paused at j=5
+#                                                     dfs(i=5)      <- running
+#       [0,0,0,1,1,0],  5  i                        row 5, j=4: visited. j=5: itself.
+#                                                   rest 0 -> RETURN, pop dfs(5)
+#
+# ---- step 7: unwinding -----------------------------------------------------------------------
+#   dfs(4) resumes at j=6: 0           -> RETURN, pop dfs(4)
+#   dfs(2) resumes at j=5, 6: 0        -> RETURN, pop dfs(2)
+#   dfs(1) resumes at j=3..6: all 0    -> RETURN, pop dfs(1)
+#
+#   province = 1; visited = set(1,2,3,4,5)          stack: (empty)
+#   -> back in the OUTER loop. One call (dfs(1)) visited the whole first province.
+#
+# ---- step 8 ---------------------------------------------------------------------------------
+#   outer loop i = 2, 3, 4, 5: all in visited -> skip, province stays 1
+#
+# ---- step 9 ---------------------------------------------------------------------------------
+#   outer loop i = 6: not visited -> province += 1
+#   province = 2; visited = set(1,2,3,4,5,6)        stack:
+#                                                     dfs(i=6)      <- running
+#                        j
+#       [0,0,0,0,0,1],  6  i                        row 6: only itself -> RETURN, pop dfs(6)
+#
+#   stack empty, outer loop done -> return province = 2
+#
+# What to notice: `province += 1` only ever runs in the OUTER loop, when the stack is EMPTY.
+# Everything a dfs reaches while the stack is non-empty belongs to the same province.
