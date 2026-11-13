@@ -11,7 +11,7 @@ Each folder has its own README with a one-line key idea per problem, and ✅ mar
 | [Hashing (hash maps & sets)](02-hashing/) | Trade memory for O(1) lookups: count frequencies, remember what you've seen, group by a key. | 13 |
 | [Two Pointers](03-two-pointers/) | Two indices moving toward each other (or at different speeds) over sorted or sequential data to avoid nested loops. | 10 |
 | [Sliding Window](04-sliding-window/) | Grow the right edge, shrink the left edge while the window is invalid. Turns O(n^2) substring problems into O(n). | 3 |
-| [Prefix Sum](05-prefix-sum/) | Precompute running totals so any range sum is prefix[r+1] - prefix[l] in O(1). | 3 |
+| [Prefix Sum](05-prefix-sum/) | Precompute running totals so any range sum is prefix[r+1] - prefix[l] in O(1). | 4 |
 | [Stack](06-stack/) | Last-in, first-out: matching brackets, undoing, nesting, and 'most recent unresolved item' problems. | 7 |
 | [Binary Search](07-binary-search/) | Halve a sorted search space each step: O(log n). Watch the loop condition and mid +/- 1. | 7 |
 | [Linked Lists](08-linked-lists/) | Dummy head nodes, fast/slow pointers, and careful pointer rewiring. | 14 |
