@@ -12,3 +12,4 @@ Build an adjacency list (or treat a grid as a graph), keep a visited set, then B
 | [clone-graph](clone-graph.py) | old -> new node map; BFS with a queue (or DFS) | | ✅ |
 | [course-schedule](course-schedule.py) | Cycle detection with a 'visiting' set on the current path | | ✅ |
 | [rotting-oranges](rotting-oranges.py) | Multi-source BFS, one wave per minute | | ✅ |
+| [number-of-provinces](number-of-provinces.py) | Matrix row = neighbours; each new DFS from an unvisited city = one province | | |
