@@ -2,6 +2,8 @@
 
 Recurse down left/right subtrees and combine results on the way back up.
 
+> Binary tree or BST? A plain binary tree has **no ordering** between parent and children; a BST has left < node < right for the whole subtree. See [binary tree vs binary search tree](../11-binary-search-trees/README.md#binary-tree-vs-binary-search-tree-read-this-first).
+
 | Problem | Key idea | Bloomberg | Amazon 50 |
 |---|---|:-:|:-:|
 | [maximum-depth-of-binary-tree](maximum-depth-of-binary-tree.py) | 1 + max(left, right) |  | ✅ |
