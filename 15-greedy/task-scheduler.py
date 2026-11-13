@@ -25,6 +25,95 @@ import heapq
 # =============================================================================================
 
 
+# =============================================================================================
+# Build it up from small examples (the way the video explains it). I = idle.
+# =============================================================================================
+# First: what is an "interval"?
+#   Every unit of time is ONE interval. In each interval the CPU either runs one task or sits
+#   IDLE. The answer counts ALL intervals, so:
+#
+#       answer = (number of tasks) + (number of idles we couldn't avoid)
+#
+#   Each idle is an interval where the CPU had nothing it was ALLOWED to run (everything left was
+#   still cooling down). So every "I" adds 1 to the answer, exactly like a task does.
+#
+# ---- Example 1: A B C A B C, n = 2  -> 6 ----------------------------------------------------
+#       A B C A B C
+#   Between the two A's there are B and C: 2 other tasks = n. Same for B and C.
+#   No idle needed.  output = 6 = len(tasks)
+#
+# ---- Example 2: A A A, n = 2  -> 7 ----------------------------------------------------------
+#       A I I A I I A
+#   Only A exists, so the 2 slots after each A (except the last) MUST be idle.
+#   output = 3 tasks + 4 idles = 7
+#
+# ---- Example 3: A A A B, n = 2  -> 7 --------------------------------------------------------
+#       A B I A I I A
+#   B goes into one of A's idle slots. It replaces an idle, it doesn't add time.
+#   output = 4 tasks + 3 idles = 7      (same 7 as before!)
+#
+# ---- Example 4: A A A B B C C, n = 2  -> 7 --------------------------------------------------
+#       A B C A B C A
+#   B, B, C, C fill ALL 4 idle slots.
+#   output = 7 tasks + 0 idles = 7      (still 7)
+#
+# What examples 2, 3 and 4 show: A (the most frequent task) sets the length. Other tasks just
+# FILL A's idle slots for free. They never make the schedule longer, until the slots run out.
+#
+# ---------------------------------------------------------------------------------------------
+# WHY THE HIGHEST FREQUENCY?
+# ---------------------------------------------------------------------------------------------
+# The task with the most copies needs the most cooldowns. A appears 3 times, so there are 2 gaps
+# between its copies, and each gap must be at least n long:
+#
+#       A [n slots] A [n slots] A
+#
+# No matter what else you have, you can't fit 3 A's into fewer than (3-1)*(n+1) + 1 = 7
+# intervals. A task with fewer copies needs fewer gaps, and it fits inside A's gaps. So the
+# busiest task is the one that decides the minimum length; the others never stretch it.
+#
+# ---------------------------------------------------------------------------------------------
+# The formulas from the video
+# ---------------------------------------------------------------------------------------------
+#   idle      = (max_occurring_number - 1) * n
+#               the idle slots A's gaps create BEFORE anything else fills them
+#               (example 2: (3-1)*2 = 4 idles:  A I I A I I A)
+#
+#   counter   = how many tasks appear max_occurring_number times (tasks tied for most frequent)
+#
+#   intervals = (max_occurring_number - 1) * (n + 1) + counter
+#               (max - 1) blocks of "A + n slots", then one last block holding every tied task
+#
+#   Check:  AAABBB, n = 2:   (3-1)*(2+1) + 2 = 8      A B I A B I A B
+#           AAA,    n = 2:   (3-1)*(2+1) + 1 = 7      A I I A I I A
+#
+# ---------------------------------------------------------------------------------------------
+# WHY max(intervals, len(tasks))?
+# ---------------------------------------------------------------------------------------------
+# The formula assumes A's gaps are the limit. But if there are MORE other tasks than slots, the
+# extras don't fit in the gaps. Then you just make the gaps wider and keep going: nobody ever has
+# to wait, there are 0 idles, and the answer is simply the number of tasks.
+#
+#   tasks = A B C A B C D E F, n = 2      (A, B, C twice; D, E, F once; 9 tasks)
+#   intervals = (2-1)*(2+1) + 3 = 6       <- too small! 9 tasks can't fit in 6 intervals
+#   len(tasks) = 9
+#
+#       A B C D A B C E F      -> 9, no idle, every repeat is >= 3 apart
+#
+#   answer = max(6, 9) = 9
+#
+# So:  - if there AREN'T enough tasks to fill the gaps -> idles are left -> the formula is bigger
+#      - if there ARE enough (or more) tasks           -> no idles       -> len(tasks) is bigger
+# max() picks whichever case you're in. You can never go below len(tasks): every task needs its
+# own interval.
+#
+# Same thing, counting idles directly:
+#   idle_left = (max - 1) * n  -  (tasks that fill those slots)
+#   answer    = len(tasks) + max(0, idle_left)
+# When the fillers outnumber the slots, idle_left goes negative, max(0, ...) makes it 0, and the
+# answer is just len(tasks). That's the same max() in a different form.
+
+
 # ---------------------------------------------------------------------------------------------
 # Step 1: build the skeleton from the most frequent task
 # ---------------------------------------------------------------------------------------------
@@ -133,6 +222,38 @@ class Solution:
 #   slots    = (3-1)*(2+1) + 1 = 7
 #   len      = 9
 #   answer   = max(7, 9) = 9      (more tasks than gaps, so no idle at all; see Step 4)
+
+
+# ---------------------------------------------------------------------------------------------
+# The video's code (same formula, written step by step with a dict and a sorted list)
+# ---------------------------------------------------------------------------------------------
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        d = {}
+        for i in tasks:                          # count each task
+            if i in d:
+                d[i] += 1
+            else:
+                d[i] = 1
+        lst = sorted(d.values(), reverse=True)   # counts, biggest first, e.g. [3, 3] for AAABBB
+        max_number = lst[0]                      # the highest frequency
+
+        i = 0
+        counter = 0
+        while i < len(lst) and lst[i] == max_number:   # how many tasks tie for the highest
+            counter += 1
+            i += 1
+
+        ret = (max_number - 1) * (n + 1) + counter     # skeleton built around the busiest task
+        return max(ret, len(tasks))                    # can't be shorter than doing every task
+
+# Note: in the video the first run failed with "'builtin_function_or_method' object is not
+# iterable" because it was written d.values without the (). It must be d.values().
+#
+# Dry run on AAABBB, n = 2:
+#   d = {A: 3, B: 3}    lst = [3, 3]    max_number = 3
+#   while: lst[0] == 3 -> counter 1, lst[1] == 3 -> counter 2, i = 2 = len -> stop
+#   ret = (3 - 1) * 3 + 2 = 8       max(8, 6) = 8
 
 
 # ---------------------------------------------------------------------------------------------
