@@ -9,6 +9,19 @@ from functools import lru_cache
 #   s = "applepenapple", wordDict = ["apple", "pen"]                       -> True  ("apple pen apple")
 #   s = "catsandog",     wordDict = ["cats", "dog", "sand", "and", "cat"]  -> False
 #
+# Her two samples (from the video):
+#   s = "helloworld",    wordDict = {"world", "ello", "he", "lo", "ll"}    -> False
+#   s = "four",          wordDict = {"f", "our", "oompaloompa"}            -> True  ("f our")
+#
+# READ THE QUESTION CAREFULLY: s must be split into "a sequence of ONE OR MORE dictionary words".
+#   - You do NOT have to use every word in wordDict. Unused words are fine.
+#   - You CAN use the same word more than once.
+#   - What you MUST do is cover every character of s, with no gaps and no leftovers.
+# That's why "four" is True even though "oompaloompa" is never used: "f" + "our" covers all of
+# "four", and that's all the question asks. The dictionary is a menu, not a checklist.
+# And it's why "helloworld" is False even though almost every piece is a word: "h" is left over
+# at the start, and no word covers it.
+#
 # ---------------------------------------------------------------------------------------------
 # Intuition (bottom-up DP)
 # ---------------------------------------------------------------------------------------------
@@ -145,8 +158,36 @@ class Solution:
 #
 #   dp = [True, True, False, False, True]   -> return dp[-1] = True   ("f" + "our")
 #
+#   Why True when "oompaloompa" was never used? The question asks for "one or more" dictionary
+#   words, not ALL of them. dp[4] only asks "can the first 4 characters be covered by words?",
+#   and "f" + "our" covers them exactly. Words we didn't need are simply ignored, and since
+#   "oompaloompa" is longer than s, s[j:i] can never even equal it.
+#
 #   Solution 1 would also have tried j = 2 and j = 3 at i = 3 and i = 4 and thrown them away.
 #   Solution 2 never looks at them.
+
+# ---------------------------------------------------------------------------------------------
+# Dry run 3: Solution 2 on s = "helloworld", wordDict = {"world", "ello", "he", "lo", "ll"}
+# ---------------------------------------------------------------------------------------------
+#       dp index:   0     1     2     3     4     5     6     7     8     9    10
+#       piece:         h     e     l     l     o     w     o     r     l     d
+#
+#   start:  trues = [0]
+#
+#   i = 1:  j=0 "h"                                    no            dp[1] = False
+#   i = 2:  j=0 "he"                                   word          dp[2] = True, trues = [0, 2]
+#   i = 3:  j=0 "hel", j=2 "l"                         no            dp[3] = False
+#   i = 4:  j=0 "hell" no, j=2 "ll"                    word          dp[4] = True, trues = [0, 2, 4]
+#   i = 5:  j=0 "hello", j=2 "llo", j=4 "o"            no            dp[5] = False
+#   i = 6..9: only j = 0, 2, 4 are tried, none gives a word          all False
+#   i = 10: j=0 "helloworld", j=2 "lloworld", j=4 "oworld"   no      dp[10] = False
+#
+#   dp = [True, False, True, False, True, False, False, False, False, False, False]
+#   return dp[-1] = False   (same answer as Dry run 1)
+#
+#   Compare with Dry run 1: Solution 1 tried all 10 starts at i = 10. Solution 2 tried only 3.
+#   Also notice "ello" (j=1) and "lo" (j=3) and "world" (j=5) are never even checked: 1, 3 and 5
+#   were never added to trues, because nothing could reach them.
 
 # ---------------------------------------------------------------------------------------------
 # Other ways (kept from before)
