@@ -21,7 +21,7 @@ Each folder has its own README with a one-line key idea per problem, and ✅ mar
 | [Graphs (BFS / DFS on grids and adjacency lists)](12-graphs/) | Build an adjacency list (or treat a grid as a graph), keep a visited set, then BFS or DFS. | 8 |
 | [Heap / Priority Queue](13-heap-priority-queue/) | Get the smallest (or largest, by negating) item in O(log n). Go-to for 'top K' problems. | 2 |
 | [Intervals](14-intervals/) | Sort by start time first, then sweep and compare neighbours. | 3 |
-| [Greedy](15-greedy/) | Make the locally best choice each step, when you can prove it never hurts later. | 3 |
+| [Greedy](15-greedy/) | Make the locally best choice each step, when you can prove it never hurts later. | 4 |
 | [Backtracking](16-backtracking/) | Choose, explore, un-choose. Builds every combination/path; prune early. | 5 |
 | [Dynamic Programming](17-dynamic-programming/) | Break into overlapping subproblems, store the answers (memo or table). | 5 |
 | [Math & Bit Manipulation](18-math-and-bit-manipulation/) | Digit tricks (% 10, // 10), XOR cancelling, and bit-count recurrences. | 5 |
