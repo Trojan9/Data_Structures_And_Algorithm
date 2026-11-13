@@ -17,7 +17,7 @@ Each folder has its own README with a one-line key idea per problem, and ✅ mar
 | [Linked Lists](08-linked-lists/) | Dummy head nodes, fast/slow pointers, and careful pointer rewiring. | 14 |
 | [Trees: Depth-First Search](09-trees-dfs/) | Recurse down left/right subtrees and combine results on the way back up. Always start with `if not node: return ...` ([rules](09-trees-dfs/README.md#rules-of-tree-recursion-read-before-every-tree-problem)). | 10 |
 | [Trees: Breadth-First Search (level order)](10-trees-bfs/) | Use a deque; process one level at a time with `for _ in range(len(queue))`. | 7 |
-| [Binary Search Trees](11-binary-search-trees/) | Left < node < right. In-order traversal visits values in sorted order. | 4 |
+| [Binary Search Trees](11-binary-search-trees/) | Left < node < right for the whole subtree (a plain binary tree has no order). In-order traversal visits values in sorted order. ([binary tree vs BST](11-binary-search-trees/README.md#binary-tree-vs-binary-search-tree-read-this-first)) | 4 |
 | [Graphs (BFS / DFS on grids and adjacency lists)](12-graphs/) | Build an adjacency list (or treat a grid as a graph), keep a visited set, then BFS or DFS. | 9 |
 | [Heap / Priority Queue](13-heap-priority-queue/) | Get the smallest (or largest, by negating) item in O(log n). Go-to for 'top K' problems. | 2 |
 | [Intervals](14-intervals/) | Sort by start time first, then sweep and compare neighbours. | 3 |
