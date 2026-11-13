@@ -16,6 +16,7 @@ Recurse down left/right subtrees and combine results on the way back up.
 | [diameter-of-binary-tree](diameter-of-binary-tree.py) | At each node: left height + right height |  | |
 | [check-mirror-in-n-ary-tree](check-mirror-in-n-ary-tree.py) | Children of A in order == children of B reversed | ✅ | |
 | [construct-binary-tree-from-preorder-and-inorder](construct-binary-tree-from-preorder-and-inorder.py) | preorder[0] is the root; its inorder index splits the subtrees | | ✅ |
+| [lowest-common-ancestor-of-a-binary-tree](lowest-common-ancestor-of-a-binary-tree.py) | Return None up till you see p or q; if left AND right both come back, this node is the LCA | | |
 
 ---
 

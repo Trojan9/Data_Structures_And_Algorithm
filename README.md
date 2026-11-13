@@ -3,7 +3,7 @@
 Solutions grouped by **the principle that solves them**, not by company. Work through the folders in order. Each one builds on the ones before it.
 Each folder has its own README with a one-line key idea per problem, and ✅ marks problems tagged as Bloomberg questions or as part of the Amazon SDE-I 50 list.
 
-## Principles (126 problems)
+## Principles (127 problems)
 
 | Principle | When to reach for it | # |
 |---|---|:-:|
@@ -15,7 +15,7 @@ Each folder has its own README with a one-line key idea per problem, and ✅ mar
 | [Stack](06-stack/) | Last-in, first-out: matching brackets, undoing, nesting, and 'most recent unresolved item' problems. | 7 |
 | [Binary Search](07-binary-search/) | Halve a sorted search space each step: O(log n). Watch the loop condition and mid +/- 1. | 7 |
 | [Linked Lists](08-linked-lists/) | Dummy head nodes, fast/slow pointers, and careful pointer rewiring. | 14 |
-| [Trees: Depth-First Search](09-trees-dfs/) | Recurse down left/right subtrees and combine results on the way back up. Always start with `if not node: return ...` ([rules](09-trees-dfs/README.md#rules-of-tree-recursion-read-before-every-tree-problem)). | 10 |
+| [Trees: Depth-First Search](09-trees-dfs/) | Recurse down left/right subtrees and combine results on the way back up. Always start with `if not node: return ...` ([rules](09-trees-dfs/README.md#rules-of-tree-recursion-read-before-every-tree-problem)). | 11 |
 | [Trees: Breadth-First Search (level order)](10-trees-bfs/) | Use a deque; process one level at a time with `for _ in range(len(queue))`. | 7 |
 | [Binary Search Trees](11-binary-search-trees/) | Left < node < right for the whole subtree (a plain binary tree has no order). In-order traversal visits values in sorted order. ([binary tree vs BST](11-binary-search-trees/README.md#binary-tree-vs-binary-search-tree-read-this-first)) | 4 |
 | [Graphs (BFS / DFS on grids and adjacency lists)](12-graphs/) | Build an adjacency list (or treat a grid as a graph), keep a visited set, then BFS or DFS. | 9 |
