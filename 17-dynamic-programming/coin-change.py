@@ -133,3 +133,120 @@ class Solution:
 #
 # Note: "1 + sentinel" is always bigger than the sentinel, so building on an unreachable amount
 # can never make dp[a] look reachable. min() just keeps the sentinel.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from collections import deque
+
+def coinChange(coins, amount):
+    # q holds states to explore, each a tuple (total_so_far, coins_used).
+    # Start at total 0 having used 0 coins.
+    q = deque([(0, 0)])
+
+    # visited = totals we've already queued, so we never explore the same
+    # total twice. Seed it with 0 (our start), already queued.
+    visited = {0}
+
+    # BFS loop: keep going while there are states left to explore.
+    while q:
+        # Take the oldest state (FIFO). BFS explores in order of coins_used,
+        # so the first time we reach 'amount' it's with the fewest coins.
+        total, count = q.popleft()
+
+        # If this total is exactly the target, 'count' is the minimum number
+        # of coins needed (because of BFS order) -> return it.
+        if total == amount:
+            return count
+
+        # Otherwise, try adding each coin to the current total.
+        for coin in coins:
+            new_total = total + coin
+
+            # Only queue new_total if it doesn't overshoot the target AND we
+            # haven't already queued it (that would be wasted, repeat work).
+            if new_total <= amount and new_total not in visited:
+                visited.add(new_total)            # mark as queued (on enqueue!)
+                q.append((new_total, count + 1))  # one more coin used
+
+    # Queue emptied without ever hitting 'amount' -> it can't be made.
+    return -1
+
+
+# =============================================================================
+# EXPLANATION
+# -----------------------------------------------------------------------------
+# The "graph" is invisible. Each total (0,1,2,...,amount) is a node. Adding a
+# coin is an edge from total -> total + coin, and every edge costs the same:
+# one coin. So "fewest coins to reach amount" = "shortest path from 0 to amount
+# in an unweighted graph" = exactly what BFS solves.
+#
+# Why BFS gives the minimum: BFS explores all totals reachable with 1 coin,
+# then all with 2 coins, then 3, level by level. So the FIRST time 'amount'
+# comes out of the queue, it was reached with the fewest coins -> return count.
+#
+# Why 'visited' matters: many coin sequences land on the same total (1+2 and
+# 2+1 both reach 3). Without visited you'd re-explore the same total over and
+# over. Marking it the moment you enqueue guarantees each total is queued once.
+#
+# Why new_total <= amount: coins are positive, so once you pass the target you
+# can never come back to it -> those states are dead ends, skip them.
+#
+# Why return -1: if the queue drains and 'amount' was never dequeued, no
+# combination of coins can make it.
+#
+# Complexity: Time O(amount * len(coins)), Space O(amount).
+# =============================================================================
+
+
+# =============================================================================
+# DRY RUN: coins = [1,2,5], amount = 6   (state = (total, count))
+# -----------------------------------------------------------------------------
+# Start:        q = [(0,0)]            visited = {0}
+#
+# Pop (0,0): 0 != 6. Add coins to 0:
+#   0+1=1 -> queue (1,1)   visited {0,1}
+#   0+2=2 -> queue (2,1)   visited {0,1,2}
+#   0+5=5 -> queue (5,1)   visited {0,1,2,5}
+#   q = [(1,1),(2,1),(5,1)]
+#
+# Pop (1,1): 1 != 6. From 1:
+#   1+1=2 -> in visited, skip
+#   1+2=3 -> queue (3,2)   visited +3
+#   1+5=6 -> queue (6,2)   visited +6
+#   q = [(2,1),(5,1),(3,2),(6,2)]
+#
+# Pop (2,1): 2 != 6. From 2:
+#   2+1=3 -> visited, skip
+#   2+2=4 -> queue (4,2)   visited +4
+#   2+5=7 -> 7 > 6, skip
+#   q = [(5,1),(3,2),(6,2),(4,2)]
+#
+# Pop (5,1): 5 != 6. From 5:
+#   5+1=6 -> visited, skip
+#   5+2=7 -> >6 skip ; 5+5=10 -> >6 skip
+#   q = [(3,2),(6,2),(4,2)]
+#
+# Pop (3,2): 3 != 6. From 3: 4 visited, 5 visited, 8>6 -> nothing new.
+#   q = [(6,2),(4,2)]
+#
+# Pop (6,2): total 6 == amount -> RETURN 2  ✅
+#
+# Answer: 2 coins (that path was 1 + 5, found at count 2). BFS returned it the
+# moment it surfaced. Note visited kept totals like 2, 3, 6 queued only once.
+# =============================================================================
