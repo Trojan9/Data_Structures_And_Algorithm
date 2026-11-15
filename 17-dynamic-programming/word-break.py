@@ -62,7 +62,8 @@ from functools import lru_cache
 #          dp[i] = True
 #          break             (one way to split is enough, no need to look at other j)
 # 4. Return dp[-1].
-
+#Note: it must be "if dp[j]" in the condition because, the next word can only be valid from the last word found
+#...i.e we cannot take letters from the previous word found
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         wordDict = set(wordDict)
