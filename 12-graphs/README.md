@@ -13,3 +13,4 @@ Build an adjacency list (or treat a grid as a graph), keep a visited set, then B
 | [course-schedule](course-schedule.py) | Cycle detection with a 'visiting' set on the current path | | ✅ |
 | [rotting-oranges](rotting-oranges.py) | Multi-source BFS, one wave per minute | | ✅ |
 | [number-of-provinces](number-of-provinces.py) | Matrix row = neighbours; each new DFS from an unvisited city = one province | | |
+| [minimum-knight-moves](minimum-knight-moves.py) | BFS on an infinite board, fenced to a box padded by 2; two knights meeting = knight distance A to B | | |
