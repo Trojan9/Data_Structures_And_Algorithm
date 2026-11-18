@@ -3,7 +3,7 @@
 Solutions grouped by **the principle that solves them**, not by company. Work through the folders in order. Each one builds on the ones before it.
 Each folder has its own README with a one-line key idea per problem, and ✅ marks problems tagged as Bloomberg questions or as part of the Amazon SDE-I 50 list.
 
-## Principles (129 problems)
+## Principles (130 problems)
 
 | Principle | When to reach for it | # |
 |---|---|:-:|
