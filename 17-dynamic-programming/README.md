@@ -9,3 +9,4 @@ Break into overlapping subproblems, store the answers (memo or table).
 | [unique-paths](unique-paths.py) | grid[r][c] = top + left | ✅ | |
 | [word-break](word-break.py) | dp[i] = some word ends at i and dp[i - len(word)] | ✅ | |
 | [coin-change](coin-change.py) | dp[a] = min(1 + dp[a - coin]) | | ✅ |
+| [maximum-product-subarray](maximum-product-subarray.py) | Scan prefix and suffix products (reset at 0), or track max AND min ending here | | |
