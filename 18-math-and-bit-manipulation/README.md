@@ -9,3 +9,4 @@ Digit tricks (% 10, // 10), XOR cancelling, and bit-count recurrences.
 | [add-digits](add-digits.py) | Digital root |  | |
 | [single-number](single-number.py) | XOR everything; pairs cancel out |  | |
 | [counting-bits](counting-bits.py) | bits(i) = bits(i // 2) + (i % 2) |  | |
+| [binary-string-expansion-character-at-index](binary-string-expansion-character-at-index.py) | Parent of index k is k // 2 one level up; even k = first child, odd k = second child | | |
