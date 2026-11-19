@@ -11,3 +11,4 @@ Combine the structures above into a class with fast operations. Very common in B
 | [design-underground-system](design-underground-system.py) | Check-in map + (start, end) -> totals map | ✅ | |
 | [design-a-leaderboard](design-a-leaderboard.py) | Score map; sort/heap for top K | ✅ | |
 | [design-an-ordered-stream](design-an-ordered-stream.py) | Array + pointer to the next expected id | ✅ | |
+| [design-parking-lot](design-parking-lot.py) | Fee class (first hour, extra hours, daily cap) + min-heap of free spaces + ticket map | | |
