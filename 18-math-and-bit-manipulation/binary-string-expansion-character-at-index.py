@@ -57,6 +57,73 @@
 
 
 # =====================================================================================
+# HOW THE RECURSION MOVES (in my words): walk DOWN, then walk back UP
+# =====================================================================================
+#
+#   1. Walk DOWN to the original string: keep doing k // 2 (and n - 1) until n == 0.
+#      Now k is an index in the ORIGINAL string, so return s[k].
+#   2. Walk back UP: at each level, look at THAT level's k:
+#        - k even -> return the parent's result (same as parent)
+#        - k odd  -> Version B (0 -> 01, 1 -> 10): return 1 - parent (flip)
+#                    Version A (0 -> 00, 1 -> 10): return 0
+#
+#   e.g. Version B, s = "0", n = 3, k = 5:
+#
+#     DOWN:  k=5,n=3  ->  k=2,n=2  ->  k=1,n=1  ->  k=0,n=0  -> s[0] = 0
+#     UP:    k=1 odd -> 1-0 = 1  ->  k=2 even -> 1  ->  k=5 odd -> 1-1 = 0   answer 0
+#
+# =====================================================================================
+# WHY DIVIDE BY 2? (if they ask in the interview)
+# =====================================================================================
+#
+#   We divide by 2 because every character produces exactly TWO characters during
+#   expansion. Each parent produces 2 children.
+#
+#   Example (rules 0 -> 01, 1 -> 10; the same index maths works for 0 -> 00, 1 -> 10):
+#
+#     Previous:     0       1       1
+#                   ↓       ↓       ↓
+#     Expanded:   0   1   1   0   1   0
+#     Index:      0   1   2   3   4   5
+#     Parent idx:   0       1       2
+#
+#     Child index (k)   Parent index (k // 2)
+#     ---------------   ---------------------
+#     0                 0
+#     1                 0
+#     2                 1
+#     3                 1
+#     4                 2
+#     5                 2
+#
+#   So when we write
+#       parent = solve(k // 2, n - 1)
+#   we are asking: "Which character in the previous expansion produced the character
+#   at index k?"
+#
+#   For example, k = 5: parent_index = 5 // 2 = 2. Index 5 was produced by the
+#   character at index 2 in the previous expansion.
+#
+#   We use // rather than / because we need a whole-number index (5 / 2 = 2.5 is not
+#   an index; 5 // 2 = 2 is).
+#
+#   How to explain it in an interview:
+#     "We divide the index by 2 because each character expands into exactly two
+#      characters. This means every pair of consecutive indices shares the same
+#      parent. Integer division by 2 tells us the parent's index in the previous
+#      expansion, allowing us to work backwards recursively."
+#
+#   Bonus: if each character expanded into 3 characters instead of 2, we would divide
+#   by 3 to find the parent index (and use k % 3 to know if it is the 1st, 2nd or 3rd
+#   child). The general principle:
+#
+#       parent index = floor( child index / number of children per parent )
+#                    = child_index // children_per_parent
+#
+#   And that's the mathematical reason behind k // 2.
+
+
+# =====================================================================================
 # BRUTE FORCE (only to understand / test, way too slow for big n)
 # =====================================================================================
 def build_amazon(s: str, n: int) -> str:
