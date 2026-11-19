@@ -3,7 +3,7 @@
 Solutions grouped by **the principle that solves them**, not by company. Work through the folders in order. Each one builds on the ones before it.
 Each folder has its own README with a one-line key idea per problem, and ✅ marks problems tagged as Bloomberg questions or as part of the Amazon SDE-I 50 list.
 
-## Principles (131 problems)
+## Principles (132 problems)
 
 | Principle | When to reach for it | # |
 |---|---|:-:|
@@ -25,7 +25,7 @@ Each folder has its own README with a one-line key idea per problem, and ✅ mar
 | [Backtracking](16-backtracking/) | Choose, explore, un-choose. Builds every combination/path; prune early. | 5 |
 | [Dynamic Programming](17-dynamic-programming/) | Break into overlapping subproblems, store the answers (memo or table). | 6 |
 | [Math & Bit Manipulation](18-math-and-bit-manipulation/) | Digit tricks (% 10, // 10), XOR cancelling, and bit-count recurrences. | 6 |
-| [Design (build a data structure)](19-design/) | Combine the structures above into a class with fast operations. Very common in Bloomberg interviews. | 7 |
+| [Design (build a data structure)](19-design/) | Combine the structures above into a class with fast operations. Very common in Bloomberg interviews. | 8 |
 
 ## Amazon SDE-I 50
 
