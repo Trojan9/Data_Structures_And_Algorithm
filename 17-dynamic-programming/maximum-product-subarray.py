@@ -127,6 +127,107 @@ class Solution:
 # Complexity: Time O(n), Space O(1).
 
 
+# -------------------------------------------------------------------------------------
+# SOLUTION 1b: Prefix and Suffix, also returning the START and END indexes
+# -------------------------------------------------------------------------------------
+# "With prefix and suffix there's no way to get the indexes, right?"
+# Actually, yes, you can. You just need to track where each running product starts
+# and ends:
+#   - prefix  product covers nums[prefixStart .. i]   (starts at prefixStart, ends at i)
+#   - suffix  product covers nums[j .. suffixEnd]     (starts at j, ends at suffixEnd)
+#   - after a zero, the product resets to 1 AND its boundary moves to the current spot
+
+class SolutionWithIndexes:
+    def maxProduct(self, nums: list[int]):
+        n = len(nums)
+
+        prefix = 1
+        suffix = 1
+
+        result = nums[0]
+        start = end = 0                   # best subarray so far: just nums[0]
+
+        prefixStart = 0                   # where the current prefix product began
+        suffixEnd = n - 1                 # where the current suffix product began (its right end)
+
+        for i in range(n):
+
+            # Reset prefix after zero: the new product starts here, at i
+            if prefix == 0:
+                prefix = 1
+                prefixStart = i
+
+            # Reset suffix after zero: the new product starts here, at n - i - 1
+            if suffix == 0:
+                suffix = 1
+                suffixEnd = n - i - 1
+
+            # Left to right: prefix = product of nums[prefixStart .. i]
+            prefix *= nums[i]
+
+            if prefix > result:
+                result = prefix
+                start = prefixStart
+                end = i
+
+            # Right to left: suffix = product of nums[j .. suffixEnd]
+            j = n - i - 1
+            suffix *= nums[j]
+
+            if suffix > result:
+                result = suffix
+                start = j
+                end = suffixEnd
+
+        return result, start, end         # the subarray is nums[start : end + 1]
+
+# Example: nums = [2, 3, -2, 4]   (the prefix scan finds it)
+#
+#   Index   Prefix product   Subarray
+#   -----   --------------   --------------
+#   0       2                [2]
+#   1       6                [2, 3]          <- new best: start = prefixStart = 0, end = 1
+#   2       -12              [2, 3, -2]
+#   3       -48              [2, 3, -2, 4]
+#
+#   result = 6, start = 0, end = 1
+#
+# What about suffix? nums = [-1, 2, 3]   (the suffix scan finds it)
+#
+#   Index (j)   Suffix product   Subarray
+#   ---------   --------------   ----------
+#   2           3                [3]          <- best 3: start = j = 2, end = suffixEnd = 2
+#   1           6                [2, 3]       <- best 6: start = j = 1, end = suffixEnd = 2
+#   0           -6               [-1, 2, 3]
+#
+#   result = 6, start = 1, end = 2
+#   (the prefix scan only ever sees -1, -2, -6, so it never finds 6)
+#
+# With a zero: nums = [3, -1, 0, 2, 5, -3]   -> 10 from [2, 5] (indexes 3..4)
+#
+#   i   prefix (covers)              best?            j   suffix (covers)              best?
+#   -   --------------------------   --------------   -   --------------------------   -----
+#   0   3      [0..0]                no (3 = 3)       5   -3     [5..5]                no
+#   1   -3     [0..1]                no               4   -15    [4..5]                no
+#   2   0      [0..2]                no               3   -30    [3..5]                no
+#   3   reset: prefixStart = 3
+#       2      [3..3]                no               2   0      [2..5]                no
+#   4   10     [3..4]                YES: 10, (3, 4)      reset: suffixEnd = 1
+#                                                     1   -1     [1..1]                no
+#   5   -30    [3..5]                no               0   -3     [0..1]                no
+#
+#   result = 10, start = 3, end = 4  ->  nums[3:5] = [2, 5] ✓
+#
+# The key difference:
+#   - For prefix, the subarray starts at prefixStart and ends at i.
+#   - For suffix, the subarray starts at j and ends at suffixEnd.
+#   - Both boundaries reset when a zero is encountered.
+# This gives the maximum product AND the exact subarray that produced it, so you don't
+# need to switch to dynamic programming to get the indexes.
+#
+# Complexity: Time O(n), Space O(1) (just a few extra variables).
+
+
 # =====================================================================================
 # SOLUTION 2: Dynamic Programming (Maximum and Minimum Products)
 # =====================================================================================
@@ -265,5 +366,10 @@ if __name__ == "__main__":
     for _ in range(3000):
         nums = [random.randint(-4, 4) for _ in range(random.randint(1, 9))]
         assert Solution().maxProduct(nums) == brute(nums) == SolutionDP().maxProduct(nums), nums
+        best, st, en = SolutionWithIndexes().maxProduct(nums)
+        p = 1
+        for v in nums[st:en + 1]:
+            p *= v
+        assert best == brute(nums) and p == best, nums
     print(Solution().maxProduct([2, 3, -2, 4]), Solution().maxProduct([-2, 0, -1]),
           SolutionDP().maxProduct([-2, 3, -4]))
